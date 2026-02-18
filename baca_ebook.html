@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baca E-book - Sistem Pemeriksaan Kesehatan Pranikah</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --soft-sage: #CFE8E5;
+      --soft-lavender: #E6E6FA;
+      --soft-blue: #D6E6F2;
+      --soft-beige: #FDF6EC;
+      --text-dark: #2D3748;
+      --text-muted: #718096;
+      --primary-color: #4A9D8E;
+      --secondary-color: #7B8CDE;
+      --success-color: #48A868;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, var(--soft-beige) 0%, var(--soft-blue) 50%, var(--soft-sage) 100%);
+      color: var(--text-dark);
+    }
+
+    .main-wrapper {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Navigation */
+    .header-nav {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 1.25rem 0;
+      border-bottom: 1px solid #E8E8E8;
+      flex-shrink: 0;
+    }
+
+    .back-link-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      margin-bottom: 0;
+    }
+
+    .back-link-header:hover {
+      color: #3D8A7D;
+      transform: translateX(-3px);
+    }
+
+    .back-arrow {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Page Header */
+    .page-header {
+      padding: 2.5rem 0 2rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-breadcrumb {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Content Container */
+    .content-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 2rem;
+    }
+
+    .ebook-wrapper {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 2rem;
+    }
+
+    /* E-book Card */
+    .ebook-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #E8E8E8;
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+      position: sticky;
+      top: 1rem;
+    }
+
+    .ebook-cover {
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(135deg, var(--soft-sage) 0%, #B8DDD9 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ebook-cover::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect fill="url(%23pattern)" width="100" height="100"/></svg>');
+      opacity: 0.5;
+    }
+
+    .ebook-cover-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+    }
+
+    .ebook-cover-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem;
+      opacity: 0.9;
+    }
+
+    .ebook-cover-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .ebook-cover-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .ebook-info {
+      padding: 1.75rem;
+    }
+
+    .ebook-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .ebook-author {
+      font-weight: 500;
+      color: var(--text-dark);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .ebook-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .ebook-stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #E8E8E8;
+    }
+
+    .stat-item {
+      flex: 1;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-dark);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-read {
+      width: 100%;
+      padding: 0.95rem;
+      background: linear-gradient(135deg, var(--primary-color) 0%, #5AADA0 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-read:hover {
+      background: linear-gradient(135deg, #3D8A7D 0%, var(--primary-color) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(74, 157, 142, 0.3);
+      color: white;
+    }
+
+    .btn-read.active {
+      background: linear-gradient(135deg, var(--success-color) 0%, #5ABF7D 100%);
+      cursor: default;
+    }
+
+    /* E-book Content Area */
+    .ebook-content-area {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #E8E8E8;
+      display: flex;
+      flex-direction: column;
+      max-height: 75vh;
+    }
+
+    .ebook-content-header {
+      padding: 2rem;
+      border-bottom: 1px solid #E8E8E8;
+      background: linear-gradient(135deg, rgba(207, 232, 229, 0.3) 0%, rgba(230, 230, 250, 0.3) 100%);
+      flex-shrink: 0;
+    }
+
+    .content-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin: 0 0 0.5rem;
+    }
+
+    .content-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .ebook-content-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      display: none;
+    }
+
+    .ebook-content-body.show {
+      display: block;
+    }
+
+    .ebook-placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .ebook-placeholder-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1.5rem;
+      opacity: 0.5;
+    }
+
+    .ebook-placeholder-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .ebook-placeholder-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .ebook-placeholder-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Content Text */
+    .content-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-dark);
+    }
+
+    .content-text h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin: 2rem 0 1rem;
+      padding-top: 1rem;
+      border-top: 2px solid #E8E8E8;
+    }
+
+    .content-text h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    .content-text p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+
+    .content-text ul,
+    .content-text ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+
+    .content-text li {
+      margin-bottom: 0.5rem;
+    }
+
+    .content-highlight {
+      background: rgba(74, 157, 142, 0.1);
+      border-left: 4px solid var(--primary-color);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+    }
+
+    .content-highlight p {
+      margin: 0;
+    }
+
+    /* Reading Progress */
+    .reading-progress {
+      padding: 1rem 2rem;
+      display: none;
+      border-top: 1px solid #E8E8E8;
+      background: #F9F9F9;
+      flex-shrink: 0;
+    }
+
+    .reading-progress.show {
+      display: block;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-container {
+      height: 6px;
+      background: #E8E8E8;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color) 0%, #5AADA0 100%);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Footer */
+    footer {
+      padding: 1.5rem 0;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+      border-top: 1px solid #E8E8E8;
+      flex-shrink: 0;
+    }
+
+    .footer-text {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    /* Scrollbar Styling */
+    .ebook-content-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .ebook-content-body::-webkit-scrollbar-track {
+      background: #F5F5F5;
+    }
+
+    .ebook-content-body::-webkit-scrollbar-thumb {
+      background: #C0C0C0;
+      border-radius: 4px;
+    }
+
+    .ebook-content-body::-webkit-scrollbar-thumb:hover {
+      background: #A0A0A0;
+    }
+
+    .content-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .content-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content-container::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+
+    .content-container::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 1024px) {
+      .ebook-wrapper {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .ebook-card {
+        position: static;
+      }
+
+      .ebook-content-area {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-header {
+        padding: 1.5rem 0 1rem;
+      }
+
+      .page-title {
+        font-size: 1.5rem;
+      }
+
+      .ebook-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .ebook-card {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 1rem;
+        height: auto;
+      }
+
+      .ebook-cover {
+        height: 180px;
+        grid-column: 1;
+        grid-row: 1 / 3;
+      }
+
+      .ebook-info {
+        padding: 1.25rem;
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      .btn-read {
+        grid-column: 2;
+        grid-row: 2;
+      }
+
+      .ebook-content-area {
+        margin-top: 1rem;
+        max-height: none;
+      }
+
+      .ebook-content-body {
+        padding: 1.5rem;
+      }
+
+      .content-text h2 {
+        font-size: 1.2rem;
+      }
+
+      .content-text h3 {
+        font-size: 1rem;
+      }
+
+      .content-text {
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .page-title {
+        font-size: 1.25rem;
+      }
+
+      .ebook-card {
+        grid-template-columns: 1fr;
+      }
+
+      .ebook-cover {
+        height: 200px;
+        grid-column: 1;
+      }
+
+      .ebook-info {
+        grid-column: 1;
+        padding: 1rem;
+      }
+
+      .btn-read {
+        grid-column: 1;
+      }
+
+      .ebook-stats {
+        flex-direction: row;
+        gap: 0.75rem;
+      }
+
+      .ebook-content-header {
+        padding: 1.5rem;
+      }
+
+      .content-title {
+        font-size: 1.25rem;
+      }
+
+      .content-text h2 {
+        margin: 1.5rem 0 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .content-highlight {
+        padding: 0.75rem;
+        margin: 1rem 0;
+      }
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body>
+  <div class="main-wrapper"><!-- Header Navigation -->
+   <nav class="header-nav">
+    <div class="container">
+     <a href="#" class="back-link-header" onclick="handleBack(event)">
+      <svg class="back-arrow" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg><span id="backLinkText">Kembali ke Dashboard</span> </a>
+    </div>
+   </nav><!-- Page Content -->
+   <div class="content-container">
+    <div class="container"><!-- Page Header -->
+     <div class="page-header">
+      <h1 class="page-title" id="pageTitle">Baca E-book Kesehatan Pranikah</h1>
+      <p class="page-breadcrumb">Dashboard <span style="margin: 0 0.5rem;">/</span> E-book <span style="margin: 0 0.5rem;">/</span> <span id="ebookTitleBreadcrumb">Panduan Lengkap Kesehatan Pranikah</span></p>
+     </div><!-- Main Content -->
+     <div class="ebook-wrapper">
+      <!-- E-book Card -->
+      <div class="ebook-card">
+       <!-- Cover -->
+       <div class="ebook-cover">
+        <div class="ebook-cover-content">
+         <div class="ebook-cover-icon">
+          <svg viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M52 8H12C9.791 8 8 9.791 8 12v40c0 2.209 1.791 4 4 4h40c2.209 0 4-1.791 4-4V12c0-2.209-1.791-4-4-4z" stroke="white" stroke-width="2" fill="none" /> <path d="M48 16H16v28h32V16z" stroke="white" stroke-width="2" /> <path d="M20 24h24M20 32h24M20 40h16" stroke="white" stroke-width="2" stroke-linecap="round" />
+          </svg>
+         </div>
+         <p class="ebook-cover-title" id="ebookCoverTitle">Panduan Lengkap Kesehatan Pranikah</p>
+        </div>
+       </div><!-- Info -->
+       <div class="ebook-info">
+        <div class="ebook-author" id="ebookAuthor">
+         Tim Kesehatan Reproduksi
+        </div>
+        <div class="ebook-meta">
+         <svg style="width: 16px; height: 16px;" viewbox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3.5-3.5 1.42-1.42L13 8.17l6.08-6.08 1.42 1.42L13 11z" />
+         </svg><span>Sudah Dibaca</span>
+        </div>
+        <p class="ebook-description" id="ebookDescription">Panduan komprehensif untuk mempersiapkan kesehatan fisik dan mental sebelum pernikahan dengan informasi terlengkap dari para ahli kesehatan reproduksi</p>
+        <div class="ebook-stats">
+         <div class="stat-item">
+          <div class="stat-value">
+           24
+          </div>
+          <div class="stat-label">
+           Halaman
+          </div>
+         </div>
+         <div class="stat-item">
+          <div class="stat-value">
+           100%
+          </div>
+          <div class="stat-label">
+           Selesai
+          </div>
+         </div>
+         <div class="stat-item">
+          <div class="stat-value">
+           5 hr
+          </div>
+          <div class="stat-label">
+           Dibaca
+          </div>
+         </div>
+        </div><button class="btn-read active" id="readButton" onclick="toggleReadMode()">✓ Sudah Selesai</button>
+       </div>
+      </div><!-- Content Area -->
+      <div class="ebook-content-area">
+       <!-- Header -->
+       <div class="ebook-content-header">
+        <h2 class="content-title" id="contentTitle">Panduan Lengkap Kesehatan Pranikah</h2>
+        <p class="content-subtitle">Bacaan untuk mempersiapkan pernikahan yang sehat dan bahagia</p>
+       </div><!-- Placeholder State -->
+       <div class="ebook-placeholder" id="placeholderState">
+        <div class="ebook-placeholder-icon">
+         <svg viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 8C18.745 8 8 18.745 8 32s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm0 44c-11.046 0-20-8.954-20-20s8.954-20 20-20 20 8.954 20 20-8.954 20-20 20zm-1-30h2v20h-2zm0-8h2v4h-2z" fill="currentColor" opacity="0.5" />
+         </svg>
+        </div>
+        <div class="ebook-placeholder-title" id="placeholderTitle">
+         Mulai Membaca
+        </div>
+        <p class="ebook-placeholder-text">Klik tombol "Baca Sekarang" untuk mulai membaca konten e-book</p>
+       </div><!-- Content Body -->
+       <div class="ebook-content-body" id="contentBody">
+        <div class="content-text" id="contentText">
+         <h2>Pendahuluan</h2>
+         <p>Kesehatan pranikah adalah fondasi penting untuk membangun kehidupan pernikahan yang sehat, bahagia, dan produktif. Panduan ini dirancang khusus untuk calon pengantin yang ingin mempersiapkan diri secara menyeluruh sebelum memasuki kehidupan berumah tangga.</p>
+         <p>Persiapan kesehatan tidak hanya meliputi aspek fisik, tetapi juga kesehatan mental, emosional, dan sosial. Pemeriksaan kesehatan pranikah yang komprehensif membantu mengidentifikasi kondisi kesehatan yang perlu diperhatikan dan mendapatkan intervensi yang tepat sejak dini.</p>
+         <h2>Pentingnya Pemeriksaan Kesehatan Pranikah</h2>
+         <p>Pemeriksaan kesehatan pranikah memiliki beberapa manfaat penting:</p>
+         <ul>
+          <li><strong>Deteksi Dini:</strong> Mengidentifikasi kondisi kesehatan yang mungkin mempengaruhi kesuburan dan kesehatan reproduksi</li>
+          <li><strong>Pencegahan:</strong> Memberikan peluang untuk pencegahan penyakit menular dan penyakit genetik</li>
+          <li><strong>Edukasi:</strong> Memberikan informasi yang akurat tentang kesehatan reproduksi dan perencanaan keluarga</li>
+          <li><strong>Dukungan Psikologis:</strong> Membantu pasangan dalam menghadapi kecemasan dan ekspektasi tentang pernikahan</li>
+         </ul>
+         <h2>Aspek-Aspek Kesehatan Pranikah</h2>
+         <h3>1. Kesehatan Reproduksi</h3>
+         <div class="content-highlight">
+          <p>Kesehatan reproduksi mencakup kondisi organ reproduksi, kesuburan, dan riwayat kesehatan seksual. Pemeriksaan ini penting untuk memastikan tidak ada gangguan yang dapat mempengaruhi kemampuan untuk hamil dan melahirkan.</p>
+         </div>
+         <h3>2. Pemeriksaan Laboratorium</h3>
+         <p>Pemeriksaan laboratorium rutin meliputi:</p>
+         <ul>
+          <li>Tes darah lengkap untuk deteksi anemia dan infeksi</li>
+          <li>Tes golongan darah dan faktor Rh</li>
+          <li>Tes HIV, sifilis, dan hepatitis B</li>
+          <li>Tes gula darah untuk deteksi diabetes</li>
+          <li>Pemeriksaan urine untuk mendeteksi infeksi saluran kemih</li>
+         </ul>
+         <h3>3. Kesehatan Mental dan Emosional</h3>
+         <p>Persiapan psikologis sama pentingnya dengan persiapan fisik. Konsultasi dengan tenaga profesional kesehatan mental dapat membantu pasangan mengelola kecemasan, stres, dan ekspektasi tentang pernikahan.</p>
+         <h2>Panduan Gaya Hidup Sehat</h2>
+         <h3>Pola Makan yang Sehat</h3>
+         <p>Konsumsi makanan bergizi seimbang yang kaya akan vitamin, mineral, dan antioksidan. Prioritaskan:</p>
+         <ul>
+          <li>Protein berkualitas tinggi dari ikan, ayam, telur, dan kacang-kacangan</li>
+          <li>Buah dan sayuran segar minimal 5 porsi per hari</li>
+          <li>Produk susu rendah lemak untuk kesehatan tulang</li>
+          <li>Air putih cukup (minimal 8 gelas per hari)</li>
+          <li>Batasi konsumsi gula, garam, dan lemak jenuh</li>
+         </ul>
+         <h3>Olahraga Teratur</h3>
+         <div class="content-highlight">
+          <p>Lakukan aktivitas fisik minimal 150 menit per minggu dengan intensitas sedang. Olahraga membantu meningkatkan stamina, daya tahan, dan kesehatan mental.</p>
+         </div>
+         <h3>Istirahat yang Cukup</h3>
+         <p>Tidur berkualitas 7-9 jam per malam sangat penting untuk pemulihan tubuh dan kesehatan mental. Tidur yang cukup membantu:</p>
+         <ul>
+          <li>Meningkatkan sistem kekebalan tubuh</li>
+          <li>Meningkatkan konsentrasi dan daya ingat</li>
+          <li>Mengatur hormon reproduksi</li>
+          <li>Mengurangi stres dan kecemasan</li>
+         </ul>
+         <h3>Manajemen Stres</h3>
+         <p>Stres dalam persiapan pernikahan adalah hal yang wajar. Teknik manajemen stres yang efektif meliputi:</p>
+         <ul>
+          <li>Meditasi dan mindfulness</li>
+          <li>Yoga atau tai chi</li>
+          <li>Hobi dan aktivitas yang menyenangkan</li>
+          <li>Waktu berkualitas dengan keluarga dan teman</li>
+          <li>Berbicara dengan konselor atau terapis</li>
+         </ul>
+         <h2>Perencanaan Keluarga</h2>
+         <p>Pemeriksaan pranikah adalah waktu yang tepat untuk mendiskusikan rencana keluarga dengan pasangan. Topik penting yang perlu dibicarakan:</p>
+         <ul>
+          <li>Waktu yang diinginkan untuk memiliki anak</li>
+          <li>Jumlah anak yang diinginkan</li>
+          <li>Pilihan kontrasepsi yang sesuai</li>
+          <li>Kesehatan reproduksi dan kesuburan</li>
+         </ul>
+         <h2>Kesimpulan</h2>
+         <p>Persiapan kesehatan pranikah yang baik merupakan investasi untuk masa depan yang lebih sehat dan bahagia. Dengan melakukan pemeriksaan kesehatan lengkap, mengadopsi gaya hidup sehat, dan mempersiapkan diri secara mental dan emosional, pasangan siap menghadapi kehidupan pernikahan dengan percaya diri.</p>
+         <p>Jangan ragu untuk berkonsultasi dengan tenaga profesional kesehatan jika memiliki pertanyaan atau kekhawatiran tentang kesehatan pranikah Anda. Tim kesehatan kami siap membantu Anda dalam perjalanan menuju pernikahan yang sehat.</p>
+        </div>
+       </div><!-- Reading Progress -->
+       <div class="reading-progress" id="readingProgress">
+        <div class="progress-info">
+         <span>Progress Membaca</span> <span id="progressPercentage">0%</span>
+        </div>
+        <div class="progress-bar-container">
+         <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div><!-- Footer -->
+   <footer>
+    <div class="container">
+     <p class="footer-text" id="footerText">© 2024 Sistem Pemeriksaan Kesehatan Pranikah. Hak Cipta Dilindungi.</p>
+    </div>
+   </footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const defaultConfig = {
+      page_title: 'Baca E-book Kesehatan Pranikah',
+      ebook_title: 'Panduan Lengkap Kesehatan Pranikah',
+      ebook_author: 'Tim Kesehatan Reproduksi',
+      ebook_description: 'Panduan komprehensif untuk mempersiapkan kesehatan fisik dan mental sebelum pernikahan dengan informasi terlengkap dari para ahli kesehatan reproduksi',
+      read_button_text: 'Baca Sekarang',
+      back_link_text: 'Kembali ke Dashboard',
+      footer_text: '© 2024 Sistem Pemeriksaan Kesehatan Pranikah. Hak Cipta Dilindungi.',
+      primary_color: '#4A9D8E',
+      secondary_color: '#7B8CDE',
+      background_color: '#FDF6EC',
+      text_color: '#2D3748',
+      accent_color: '#CFE8E5'
+    };
+
+    let currentConfig = { ...defaultConfig };
+    let isReading = false;
+    let readingProgress = 0;
+
+    // Toggle Read Mode
+    function toggleReadMode() {
+      const contentBody = document.getElementById('contentBody');
+      const placeholderState = document.getElementById('placeholderState');
+      const readButton = document.getElementById('readButton');
+      const readingProgress = document.getElementById('readingProgress');
+
+      if (!isReading) {
+        isReading = true;
+        contentBody.classList.add('show');
+        placeholderState.style.display = 'none';
+        readButton.textContent = '✓ Sudah Selesai';
+        readButton.classList.add('active');
+        readingProgress.classList.add('show');
+        updateReadingProgress();
+      }
+    }
+
+    // Update Reading Progress
+    function updateReadingProgress() {
+      const contentBody = document.getElementById('contentBody');
+      if (!contentBody.classList.contains('show')) return;
+
+      const scrollHeight = contentBody.scrollHeight - contentBody.clientHeight;
+      const scrolled = contentBody.scrollTop;
+      readingProgress = scrollHeight > 0 ? (scrolled / scrollHeight) * 100 : 0;
+
+      document.getElementById('progressPercentage').textContent = Math.round(readingProgress) + '%';
+      document.getElementById('progressBarFill').style.width = readingProgress + '%';
+    }
+
+    // Handle Back
+    function handleBack(e) {
+      e.preventDefault();
+      alert('Kembali ke Dashboard...');
+    }
+
+    // Content Body Scroll Event
+    const contentBody = document.getElementById('contentBody');
+    contentBody.addEventListener('scroll', updateReadingProgress);
+
+    // Element SDK Integration
+    async function onConfigChange(config) {
+      currentConfig = { ...config };
+
+      const pageTitle = document.getElementById('pageTitle');
+      const ebookTitleBreadcrumb = document.getElementById('ebookTitleBreadcrumb');
+      const ebookCoverTitle = document.getElementById('ebookCoverTitle');
+      const ebookAuthor = document.getElementById('ebookAuthor');
+      const ebookDescription = document.getElementById('ebookDescription');
+      const contentTitle = document.getElementById('contentTitle');
+      const backLinkText = document.getElementById('backLinkText');
+      const footerText = document.getElementById('footerText');
+
+      if (pageTitle) pageTitle.textContent = config.page_title || defaultConfig.page_title;
+      if (ebookTitleBreadcrumb) ebookTitleBreadcrumb.textContent = config.ebook_title || defaultConfig.ebook_title;
+      if (ebookCoverTitle) ebookCoverTitle.textContent = config.ebook_title || defaultConfig.ebook_title;
+      if (ebookAuthor) ebookAuthor.textContent = config.ebook_author || defaultConfig.ebook_author;
+      if (ebookDescription) ebookDescription.textContent = config.ebook_description || defaultConfig.ebook_description;
+      if (contentTitle) contentTitle.textContent = config.ebook_title || defaultConfig.ebook_title;
+      if (backLinkText) backLinkText.textContent = config.back_link_text || defaultConfig.back_link_text;
+      if (footerText) footerText.textContent = config.footer_text || defaultConfig.footer_text;
+
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+
+      document.documentElement.style.setProperty('--primary-color', primaryColor);
+      document.documentElement.style.setProperty('--text-dark', textColor);
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              currentConfig.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              currentConfig.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              currentConfig.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              currentConfig.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              currentConfig.secondary_color = value;
+              window.elementSdk.setConfig({ secondary_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['page_title', config.page_title || defaultConfig.page_title],
+        ['ebook_title', config.ebook_title || defaultConfig.ebook_title],
+        ['ebook_author', config.ebook_author || defaultConfig.ebook_author],
+        ['ebook_description', config.ebook_description || defaultConfig.ebook_description],
+        ['read_button_text', config.read_button_text || defaultConfig.read_button_text],
+        ['back_link_text', config.back_link_text || defaultConfig.back_link_text],
+        ['footer_text', config.footer_text || defaultConfig.footer_text]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cfcbe9df3e40fad',t:'MTc3MTQwOTUzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

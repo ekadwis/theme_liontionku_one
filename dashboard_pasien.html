@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Pasien - Sistem Pemeriksaan Kesehatan Pranikah</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --soft-sage: #CFE8E5;
+      --soft-lavender: #E6E6FA;
+      --soft-blue: #D6E6F2;
+      --soft-beige: #FDF6EC;
+      --text-dark: #2D3748;
+      --text-muted: #718096;
+      --primary-color: #4A9D8E;
+      --secondary-color: #7B8CDE;
+      --success-color: #48A868;
+      --warning-color: #E8A949;
+      --info-color: #5A8BB0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F5F7F6;
+      color: var(--text-dark);
+      min-height: 100%;
+    }
+
+    .main-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar-top {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 1rem 0;
+      border-bottom: 1px solid #E8E8E8;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0;
+    }
+
+    .navbar-brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--soft-sage) 0%, #B8DDD9 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar-brand-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .patient-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .patient-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--soft-lavender) 0%, #D4D4F0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--secondary-color);
+    }
+
+    .patient-name {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .btn-logout {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #5AADA0 100%);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      background: linear-gradient(135deg, #3D8A7D 0%, var(--primary-color) 100%);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Main Content Area */
+    .content-area {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: white;
+      border-right: 1px solid #E8E8E8;
+      overflow-y: auto;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 1.5rem 0;
+      margin: 0;
+    }
+
+    .menu-item {
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 0.95rem 1.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border-left: 3px solid transparent;
+    }
+
+    .menu-link:hover {
+      color: var(--primary-color);
+      background-color: #F9F9F9;
+      border-left-color: var(--primary-color);
+    }
+
+    .menu-link.active {
+      color: var(--primary-color);
+      background-color: rgba(74, 157, 142, 0.08);
+      border-left-color: var(--primary-color);
+    }
+
+    .menu-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .menu-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .welcome-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .welcome-header {
+      background: linear-gradient(135deg, rgba(74, 157, 142, 0.1) 0%, rgba(123, 140, 222, 0.1) 100%);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      margin-bottom: 2rem;
+    }
+
+    .welcome-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-message {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Progress Cards */
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .progress-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #E8E8E8;
+      transition: all 0.3s ease;
+    }
+
+    .progress-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .progress-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .progress-card-icon-1 {
+      background: rgba(207, 232, 229, 0.6);
+    }
+
+    .progress-card-icon-2 {
+      background: rgba(230, 230, 250, 0.6);
+    }
+
+    .progress-card-icon-3 {
+      background: rgba(214, 230, 242, 0.6);
+    }
+
+    .progress-card-icon-4 {
+      background: rgba(253, 246, 236, 0.6);
+    }
+
+    .progress-card-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-card-status {
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .status-pending {
+      background: rgba(232, 169, 73, 0.15);
+      color: #C67C1F;
+    }
+
+    .status-complete {
+      background: rgba(72, 168, 104, 0.15);
+      color: #2D5F3F;
+    }
+
+    .status-waiting {
+      background: rgba(90, 139, 176, 0.15);
+      color: #2D4A62;
+    }
+
+    .progress-bar-wrapper {
+      margin-bottom: 0.75rem;
+    }
+
+    .progress-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #E8E8E8;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color) 0%, #5AADA0 100%);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .progress-action {
+      display: inline-block;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+    }
+
+    .progress-action:hover {
+      color: #3D8A7D;
+      text-decoration: underline;
+    }
+
+    /* Sidebar Toggle Button */
+    .sidebar-toggle {
+      display: none;
+      background: white;
+      border: 1px solid #E8E8E8;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-right: 1rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .sidebar-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .content-area {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 60px;
+        height: calc(100% - 60px);
+        width: 100%;
+        max-width: 280px;
+        z-index: 99;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.show {
+        transform: translateX(0);
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .main-content {
+        padding: 1.5rem;
+      }
+
+      .welcome-title {
+        font-size: 1.4rem;
+      }
+
+      .progress-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .patient-name {
+        display: none;
+      }
+
+      .navbar-top .container-fluid {
+        padding: 0 1rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .welcome-header {
+        padding: 1.5rem;
+      }
+
+      .welcome-title {
+        font-size: 1.25rem;
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+      }
+
+      .progress-card {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Scrollbar Styling */
+    .sidebar::-webkit-scrollbar,
+    .main-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track,
+    .main-content::-webkit-scrollbar-track {
+      background: #F5F5F5;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb,
+    .main-content::-webkit-scrollbar-thumb {
+      background: #C0C0C0;
+      border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover,
+    .main-content::-webkit-scrollbar-thumb:hover {
+      background: #A0A0A0;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="main-wrapper"><!-- Navbar -->
+   <nav class="navbar-top">
+    <div class="container-fluid">
+     <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center"><button class="sidebar-toggle" onclick="toggleSidebar()"> <span>☰</span> <span>Menu</span> </button>
+       <div class="navbar-brand">
+        <div class="navbar-brand-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /> <path d="M12 6v6l4 2" />
+         </svg>
+        </div><span>Pemeriksaan Pranikah</span>
+       </div>
+      </div>
+      <div class="patient-info">
+       <div class="patient-avatar"><span id="patientInitial">BS</span>
+       </div>
+       <div class="patient-name" id="patientNameDisplay">
+        Budi Santoso
+       </div><button class="btn-logout" onclick="handleLogout()" id="logoutBtn">Logout</button>
+      </div>
+     </div>
+    </div>
+   </nav><!-- Content Area -->
+   <div class="content-area"><!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+     <ul class="sidebar-menu">
+      <li class="menu-item"><a href="#" class="menu-link active" onclick="activeMenu(event, 'dashboard')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect> <rect x="14" y="3" width="7" height="7"></rect> <rect x="14" y="14" width="7" height="7"></rect> <rect x="3" y="14" width="7" height="7"></rect>
+         </svg></span> <span>Dashboard</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'ebook')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /> <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+         </svg></span> <span>Baca E-book</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'posttest')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4" /> <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+         </svg></span> <span>Post Test</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'srq')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" />
+         </svg></span> <span>Test SRQ</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'hasil-srq')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+         </svg></span> <span>Hasil SRQ</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'hasil-lab')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1" /> <path d="M12 1v6m0 6v6" /> <path d="M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24" /> <path d="M1 12h6m6 0h6" /> <path d="M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" />
+         </svg></span> <span>Hasil Lab</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'hasil-akhir')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4" /> <circle cx="12" cy="12" r="10" />
+         </svg></span> <span>Hasil Akhir Pemeriksaan</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'rujukan')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /> <polyline points="17 8 11 14 5 8"></polyline>
+         </svg></span> <span>Rujukan</span> </a></li>
+      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'sertifikat')"> <span class="menu-icon">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /> <path d="M8 10h8" /> <path d="M8 14h6" />
+         </svg></span> <span>Sertifikat Layak Nikah</span> </a></li>
+     </ul>
+    </aside><!-- Main Content -->
+    <main class="main-content"><!-- Welcome Section -->
+     <div class="welcome-section">
+      <div class="welcome-header">
+       <h1 class="welcome-title" id="welcomeTitle">Selamat Datang di Dashboard Pasien</h1>
+       <p class="welcome-message" id="welcomeMessage">Pantau progress pemeriksaan kesehatan pranikah Anda dan lengkapi semua tahap pemeriksaan dengan baik</p>
+      </div>
+     </div><!-- Progress Title -->
+     <h2 class="section-title" id="progressTitle">Progress Pemeriksaan</h2><!-- Progress Cards Grid -->
+     <div class="progress-grid" id="progressGrid"><!-- E-book Card -->
+      <div class="progress-card">
+       <div class="progress-card-header">
+        <div class="progress-icon progress-card-icon-1">
+         <svg viewbox="0 0 24 24" fill="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="#4A9D8E" opacity="0.8" />
+         </svg>
+        </div>
+        <div>
+         <div class="progress-card-title">
+          Baca E-book
+         </div><span class="progress-card-status status-complete">✓ Selesai</span>
+        </div>
+       </div>
+       <div class="progress-bar-wrapper">
+        <div class="progress-bar-label"><span>Progress</span> <span>100%</span>
+        </div>
+        <div class="progress-bar">
+         <div class="progress-bar-fill" style="width: 100%"></div>
+        </div>
+       </div>
+       <p class="progress-description">Anda telah menyelesaikan membaca semua materi edukasi kesehatan pranikah</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Lihat Detail →</a>
+      </div><!-- Post Test Card -->
+      <div class="progress-card">
+       <div class="progress-card-header">
+        <div class="progress-icon progress-card-icon-2">
+         <svg viewbox="0 0 24 24" fill="currentColor"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="#7B8CDE" stroke-width="2" fill="none" />
+         </svg>
+        </div>
+        <div>
+         <div class="progress-card-title">
+          Post Test
+         </div><span class="progress-card-status status-complete">✓ Selesai</span>
+        </div>
+       </div>
+       <div class="progress-bar-wrapper">
+        <div class="progress-bar-label"><span>Nilai</span> <span>85/100</span>
+        </div>
+        <div class="progress-bar">
+         <div class="progress-bar-fill" style="width: 85%"></div>
+        </div>
+       </div>
+       <p class="progress-description">Skor test Anda sangat baik. Silakan lanjutkan ke tahap pemeriksaan berikutnya</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Lihat Detail →</a>
+      </div><!-- Test SRQ Card -->
+      <div class="progress-card">
+       <div class="progress-card-header">
+        <div class="progress-icon progress-card-icon-3">
+         <svg viewbox="0 0 24 24" fill="currentColor"><path d="M12 5v14M5 12h14" stroke="#5A8BB0" stroke-width="2" fill="none" />
+         </svg>
+        </div>
+        <div>
+         <div class="progress-card-title">
+          Test SRQ
+         </div><span class="progress-card-status status-waiting">⏳ Menunggu</span>
+        </div>
+       </div>
+       <div class="progress-bar-wrapper">
+        <div class="progress-bar-label"><span>Progress</span> <span>0%</span>
+        </div>
+        <div class="progress-bar">
+         <div class="progress-bar-fill" style="width: 0%"></div>
+        </div>
+       </div>
+       <p class="progress-description">Jadwalkan test psikologi dengan tenaga medis profesional kami</p><button class="progress-action" onclick="handleMenuClick(event)">Jadwalkan Sekarang →</button>
+      </div><!-- Hasil Lab Card -->
+      <div class="progress-card">
+       <div class="progress-card-header">
+        <div class="progress-icon progress-card-icon-4">
+         <svg viewbox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="1" fill="#C9A85C" opacity="0.8" /> <path d="M12 1v6m0 6v6" stroke="#C9A85C" stroke-width="2" fill="none" opacity="0.8" /> <path d="M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24" stroke="#C9A85C" stroke-width="2" fill="none" opacity="0.8" />
+         </svg>
+        </div>
+        <div>
+         <div class="progress-card-title">
+          Hasil Lab
+         </div><span class="progress-card-status status-pending">⏸ Proses</span>
+        </div>
+       </div>
+       <div class="progress-bar-wrapper">
+        <div class="progress-bar-label"><span>Progress</span> <span>60%</span>
+        </div>
+        <div class="progress-bar">
+         <div class="progress-bar-fill" style="width: 60%; background: linear-gradient(90deg, #E8A949 0%, #F0B95A 100%)"></div>
+        </div>
+       </div>
+       <p class="progress-description">Hasil lab sedang diproses. Estimasi selesai dalam 2-3 hari kerja</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Status Laboratorium →</a>
+      </div><!-- Hasil Akhir Card -->
+      <div class="progress-card">
+       <div class="progress-card-header">
+        <div class="progress-icon progress-card-icon-1">
+         <svg viewbox="0 0 24 24" fill="currentColor"><path d="M9 11l3 3L22 4" stroke="#4A9D8E" stroke-width="2" fill="none" /> <circle cx="12" cy="12" r="10" fill="none" stroke="#4A9D8E" stroke-width="2" />
+         </svg>
+        </div>
+        <div>
+         <div class="progress-card-title">
+          Hasil Akhir Pemeriksaan
+         </div><span class="progress-card-status status-waiting">⏳ Menunggu</span>
+        </div>
+       </div>
+       <div class="progress-bar-wrapper">
+        <div class="progress-bar-label"><span>Progress</span> <span>0%</span>
+        </div>
+        <div class="progress-bar">
+         <div class="progress-bar-fill" style="width: 0%"></div>
+        </div>
+       </div>
+       <p class="progress-description">Hasil akhir akan tersedia setelah semua pemeriksaan selesai</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Lihat Detail →</a>
+      </div><!-- Sertifikat Card -->
+      <div class="progress-card">
+       <div class="progress-card-header">
+        <div class="progress-icon progress-card-icon-2">
+         <svg viewbox="0 0 24 24" fill="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#7B8CDE" stroke-width="2" fill="none" /> <path d="M8 10h8M8 14h6" stroke="#7B8CDE" stroke-width="2" />
+         </svg>
+        </div>
+        <div>
+         <div class="progress-card-title">
+          Sertifikat Layak Nikah
+         </div><span class="progress-card-status status-waiting">⏳ Menunggu</span>
+        </div>
+       </div>
+       <div class="progress-bar-wrapper">
+        <div class="progress-bar-label"><span>Progress</span> <span>0%</span>
+        </div>
+        <div class="progress-bar">
+         <div class="progress-bar-fill" style="width: 0%"></div>
+        </div>
+       </div>
+       <p class="progress-description">Sertifikat akan diterbitkan setelah semua pemeriksaan lengkap</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Download Sertifikat →</a>
+      </div>
+     </div>
+    </main>
+   </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const defaultConfig = {
+      patient_name: 'Budi Santoso',
+      welcome_title: 'Selamat Datang di Dashboard Pasien',
+      welcome_message: 'Pantau progress pemeriksaan kesehatan pranikah Anda dan lengkapi semua tahap pemeriksaan dengan baik',
+      progress_title: 'Progress Pemeriksaan',
+      logout_text: 'Logout',
+      primary_color: '#4A9D8E',
+      secondary_color: '#7B8CDE',
+      background_color: '#FDF6EC',
+      text_color: '#2D3748',
+      accent_color: '#CFE8E5'
+    };
+
+    let currentConfig = { ...defaultConfig };
+
+    // Sidebar Toggle
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('show');
+    }
+
+    // Active Menu
+    function activeMenu(e, menuName) {
+      e.preventDefault();
+      
+      // Remove active class from all menu links
+      document.querySelectorAll('.menu-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to clicked menu link
+      e.target.closest('.menu-link').classList.add('active');
+      
+      // Close sidebar on mobile
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('show');
+      }
+    }
+
+    // Handle Menu Click
+    function handleMenuClick(e) {
+      e.preventDefault();
+      alert('Fitur ini akan membawa Anda ke halaman terkait');
+    }
+
+    // Logout Handler
+    function handleLogout() {
+      alert('Anda telah logout. Kembali ke halaman login...');
+    }
+
+    // Update patient name display
+    function updatePatientDisplay() {
+      const name = currentConfig.patient_name || defaultConfig.patient_name;
+      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+      
+      document.getElementById('patientNameDisplay').textContent = name;
+      document.getElementById('patientInitial').textContent = initials;
+    }
+
+    // Element SDK Integration
+    async function onConfigChange(config) {
+      currentConfig = { ...config };
+
+      const welcomeTitle = document.getElementById('welcomeTitle');
+      const welcomeMessage = document.getElementById('welcomeMessage');
+      const progressTitle = document.getElementById('progressTitle');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      if (welcomeTitle) welcomeTitle.textContent = config.welcome_title || defaultConfig.welcome_title;
+      if (welcomeMessage) welcomeMessage.textContent = config.welcome_message || defaultConfig.welcome_message;
+      if (progressTitle) progressTitle.textContent = config.progress_title || defaultConfig.progress_title;
+      if (logoutBtn) logoutBtn.textContent = config.logout_text || defaultConfig.logout_text;
+
+      updatePatientDisplay();
+
+      // Apply colors
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+
+      document.documentElement.style.setProperty('--primary-color', primaryColor);
+      document.documentElement.style.setProperty('--text-dark', textColor);
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              currentConfig.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              currentConfig.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              currentConfig.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              currentConfig.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              currentConfig.secondary_color = value;
+              window.elementSdk.setConfig({ secondary_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['patient_name', config.patient_name || defaultConfig.patient_name],
+        ['welcome_title', config.welcome_title || defaultConfig.welcome_title],
+        ['welcome_message', config.welcome_message || defaultConfig.welcome_message],
+        ['progress_title', config.progress_title || defaultConfig.progress_title],
+        ['logout_text', config.logout_text || defaultConfig.logout_text]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    // Initialize
+    updatePatientDisplay();
+
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(e) {
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.querySelector('.sidebar-toggle');
+      
+      if (window.innerWidth <= 768 && sidebar.classList.contains('show')) {
+        if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+          sidebar.classList.remove('show');
+        }
+      }
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cfcb85ce6af0fad',t:'MTc3MTQwOTI3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

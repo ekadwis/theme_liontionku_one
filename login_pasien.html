@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Pasien - Sistem Pemeriksaan Kesehatan Pranikah</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --soft-sage: #CFE8E5;
+      --soft-lavender: #E6E6FA;
+      --soft-blue: #D6E6F2;
+      --soft-beige: #FDF6EC;
+      --text-dark: #2D3748;
+      --text-muted: #718096;
+      --primary-color: #4A9D8E;
+      --secondary-color: #7B8CDE;
+      --success-color: #48A868;
+      --error-color: #D97A6B;
+    }
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, var(--soft-beige) 0%, var(--soft-blue) 50%, var(--soft-sage) 100%);
+      color: var(--text-dark);
+      min-height: 100%;
+    }
+    
+    .main-wrapper {
+      width: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+    
+    .login-container {
+      max-width: 500px;
+      width: 100%;
+      padding: 0 1rem;
+    }
+    
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .user-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      padding: 1.5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--soft-sage) 0%, #B8DDD9 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(74, 157, 142, 0.15);
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .user-icon svg {
+      width: 48px;
+      height: 48px;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    .login-title {
+      font-weight: 700;
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+    
+    .login-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+    }
+    
+    .form-control {
+      padding: 0.875rem 1rem;
+      border: 1.5px solid #E8E8E8;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text-dark);
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(74, 157, 142, 0.15);
+      background: white;
+    }
+    
+    .form-control::placeholder {
+      color: #B0B0B0;
+    }
+    
+    .form-control.is-invalid {
+      border-color: var(--error-color);
+    }
+    
+    .form-control.is-invalid:focus {
+      box-shadow: 0 0 0 0.2rem rgba(217, 122, 107, 0.15);
+    }
+    
+    .invalid-feedback {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--error-color);
+      margin-top: 0.4rem;
+    }
+    
+    .btn-login {
+      padding: 0.95rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary-color) 0%, #5AADA0 100%);
+      color: white;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    
+    .btn-login:hover {
+      background: linear-gradient(135deg, #3D8A7D 0%, var(--primary-color) 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(74, 157, 142, 0.3);
+    }
+    
+    .btn-login:active {
+      transform: translateY(0);
+    }
+    
+    .btn-login:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .back-link-wrapper {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .back-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .back-link:hover {
+      color: #3D8A7D;
+      text-decoration: underline;
+    }
+    
+    .back-arrow {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+    }
+    
+    .success-message {
+      background: linear-gradient(135deg, rgba(72, 168, 104, 0.1) 0%, rgba(72, 168, 104, 0.05) 100%);
+      border: 1px solid #48A868;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: none;
+      animation: slideDown 0.4s ease;
+    }
+    
+    .success-message.show {
+      display: block;
+    }
+    
+    .success-message-text {
+      color: #2D5F3F;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    footer {
+      padding: 2rem 0;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    
+    .footer-text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    
+    .decorative-shape {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.25;
+      z-index: -1;
+    }
+    
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: var(--soft-sage);
+      top: -100px;
+      right: -100px;
+    }
+    
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: var(--soft-lavender);
+      bottom: 10%;
+      left: -50px;
+    }
+    
+    .shape-3 {
+      width: 150px;
+      height: 150px;
+      background: var(--soft-blue);
+      top: 50%;
+      right: -30px;
+    }
+    
+    @media (max-width: 576px) {
+      .login-card {
+        padding: 1.75rem 1.5rem;
+      }
+      
+      .login-title {
+        font-size: 1.5rem;
+      }
+      
+      .login-subtitle {
+        font-size: 0.9rem;
+      }
+      
+      .content-wrapper {
+        padding: 1rem 0;
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="decorative-shape shape-1"></div>
+  <div class="decorative-shape shape-2"></div>
+  <div class="decorative-shape shape-3"></div>
+  <div class="main-wrapper"><!-- Content -->
+   <div class="content-wrapper">
+    <div class="login-container"><!-- Success Message -->
+     <div class="success-message" id="successMessage">
+      <p class="success-message-text" id="successText">✓ Login berhasil! Mengalihkan ke dashboard...</p>
+     </div><!-- Login Card -->
+     <div class="login-card"><!-- Header -->
+      <div class="login-header">
+       <div class="user-icon">
+        <svg viewbox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="16" r="8" fill="#FFFFFF" opacity="0.9" /> <path d="M12 40C12 32.268 17.268 26 24 26C30.732 26 36 32.268 36 40" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.9" /> <circle cx="24" cy="24" r="20" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.3" />
+        </svg>
+       </div>
+       <h1 class="login-title" id="pageTitle">Login Pasien</h1>
+       <p class="login-subtitle" id="pageSubtitle">Masukkan data diri Anda untuk melanjutkan</p>
+      </div><!-- Form -->
+      <form id="loginForm" novalidate><!-- Nama Lengkap -->
+       <div class="form-group"><label for="fullname" class="form-label" id="fullnameLabel">Nama Lengkap</label> <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Cth: Budi Santoso" required>
+        <div class="invalid-feedback">
+         Nama lengkap harus diisi
+        </div>
+       </div><!-- Nomor Identitas -->
+       <div class="form-group"><label for="identity" class="form-label" id="identityLabel">Nomor Identitas</label> <input type="text" class="form-control" id="identity" name="identity" placeholder="Cth: 3201234567890123" required>
+        <div class="invalid-feedback">
+         Nomor identitas harus diisi
+        </div>
+       </div><!-- Password -->
+       <div class="form-group"><label for="password" class="form-label" id="passwordLabel">Password</label> <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password Anda" required>
+        <div class="invalid-feedback">
+         Password harus diisi
+        </div>
+       </div><!-- Login Button --> <button type="submit" class="btn btn-login" id="loginButton"> <span id="loginButtonText">Masuk</span> <span id="loadingSpinner" style="display: none;"> <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> <span>Memproses...</span> </span> </button>
+      </form><!-- Back Link -->
+      <div class="back-link-wrapper"><a href="#" onclick="goBackHome(event)" class="back-link">
+        <svg class="back-arrow" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg><span id="backLinkText">Kembali ke Halaman Utama</span> </a>
+      </div>
+     </div>
+    </div>
+   </div><!-- Footer -->
+   <footer>
+    <p class="footer-text" id="footerText">© 2024 Sistem Pemeriksaan Kesehatan Pranikah. Hak Cipta Dilindungi.</p>
+   </footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const defaultConfig = {
+      page_title: 'Login Pasien',
+      page_subtitle: 'Masukkan data diri Anda untuk melanjutkan',
+      fullname_label: 'Nama Lengkap',
+      identity_label: 'Nomor Identitas',
+      password_label: 'Password',
+      login_button_text: 'Masuk',
+      back_link_text: 'Kembali ke Halaman Utama',
+      footer_text: '© 2024 Sistem Pemeriksaan Kesehatan Pranikah. Hak Cipta Dilindungi.',
+      primary_color: '#4A9D8E',
+      secondary_color: '#7B8CDE',
+      background_color: '#FDF6EC',
+      text_color: '#2D3748',
+      accent_color: '#CFE8E5'
+    };
+    
+    let currentConfig = { ...defaultConfig };
+    
+    // Form Validation
+    const form = document.getElementById('loginForm');
+    
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Remove was-validated class for fresh validation
+      form.classList.remove('was-validated');
+      
+      // Check validity
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+      
+      // Get form values
+      const fullname = document.getElementById('fullname').value.trim();
+      const identity = document.getElementById('identity').value.trim();
+      const password = document.getElementById('password').value.trim();
+      
+      // Validate that fields are not empty
+      if (!fullname || !identity || !password) {
+        form.classList.add('was-validated');
+        return;
+      }
+      
+      // Show loading state
+      const loginButton = document.getElementById('loginButton');
+      const loginButtonText = document.getElementById('loginButtonText');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      
+      loginButton.disabled = true;
+      loginButtonText.style.display = 'none';
+      loadingSpinner.style.display = 'inline';
+      
+      // Simulate API call
+      setTimeout(() => {
+        // Show success message
+        const successMessage = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        
+        successText.textContent = `✓ Login berhasil! Selamat datang, ${fullname}`;
+        successMessage.classList.add('show');
+        
+        // Reset button state
+        loginButton.disabled = false;
+        loginButtonText.style.display = 'inline';
+        loadingSpinner.style.display = 'none';
+        
+        // Reset form
+        form.reset();
+        form.classList.remove('was-validated');
+        
+        // Simulate redirect after 2 seconds
+        setTimeout(() => {
+          alert('Mengarahkan ke dashboard pasien...');
+        }, 1500);
+      }, 1500);
+    });
+    
+    // Go back to home
+    function goBackHome(e) {
+      e.preventDefault();
+      // In a real app, this would navigate to home page
+      alert('Kembali ke halaman utama...');
+    }
+    
+    // Element SDK Integration
+    async function onConfigChange(config) {
+      currentConfig = { ...config };
+      
+      const pageTitle = document.getElementById('pageTitle');
+      const pageSubtitle = document.getElementById('pageSubtitle');
+      const fullnameLabel = document.getElementById('fullnameLabel');
+      const identityLabel = document.getElementById('identityLabel');
+      const passwordLabel = document.getElementById('passwordLabel');
+      const loginButtonText = document.getElementById('loginButtonText');
+      const backLinkText = document.getElementById('backLinkText');
+      const footerText = document.getElementById('footerText');
+      
+      if (pageTitle) pageTitle.textContent = config.page_title || defaultConfig.page_title;
+      if (pageSubtitle) pageSubtitle.textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      if (fullnameLabel) fullnameLabel.textContent = config.fullname_label || defaultConfig.fullname_label;
+      if (identityLabel) identityLabel.textContent = config.identity_label || defaultConfig.identity_label;
+      if (passwordLabel) passwordLabel.textContent = config.password_label || defaultConfig.password_label;
+      if (loginButtonText) loginButtonText.textContent = config.login_button_text || defaultConfig.login_button_text;
+      if (backLinkText) backLinkText.textContent = config.back_link_text || defaultConfig.back_link_text;
+      if (footerText) footerText.textContent = config.footer_text || defaultConfig.footer_text;
+      
+      // Apply colors
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      
+      document.documentElement.style.setProperty('--primary-color', primaryColor);
+      document.documentElement.style.setProperty('--text-dark', textColor);
+    }
+    
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              currentConfig.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              currentConfig.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              currentConfig.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              currentConfig.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              currentConfig.secondary_color = value;
+              window.elementSdk.setConfig({ secondary_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+    
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['page_title', config.page_title || defaultConfig.page_title],
+        ['page_subtitle', config.page_subtitle || defaultConfig.page_subtitle],
+        ['fullname_label', config.fullname_label || defaultConfig.fullname_label],
+        ['identity_label', config.identity_label || defaultConfig.identity_label],
+        ['password_label', config.password_label || defaultConfig.password_label],
+        ['login_button_text', config.login_button_text || defaultConfig.login_button_text],
+        ['back_link_text', config.back_link_text || defaultConfig.back_link_text],
+        ['footer_text', config.footer_text || defaultConfig.footer_text]
+      ]);
+    }
+    
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cfcb56023310fad',t:'MTc3MTQwOTE1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
