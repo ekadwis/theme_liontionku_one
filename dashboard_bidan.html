@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Bidan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --soft-sage: #CFE8E5;
+      --soft-lavender: #E6E6FA;
+      --soft-blue: #D6E6F2;
+      --soft-beige: #FDF6EC;
+      --text-primary: #2D3748;
+      --text-secondary: #718096;
+      --text-tertiary: #A0AEC0;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --card-shadow-hover: 0 12px 32px rgba(207, 232, 229, 0.3);
+    }
+
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--soft-beige) 0%, var(--soft-blue) 50%, var(--soft-lavender) 100%);
+      min-height: 100vh;
+      color: var(--text-primary);
+    }
+
+    .main-container {
+      min-height: 100%;
+      padding: 2rem 1rem;
+    }
+
+    .content-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header with Back Button */
+    .header-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-back:hover {
+      background: var(--soft-sage);
+      transform: translateX(-4px);
+      border-color: var(--soft-sage);
+    }
+
+    .btn-back svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-primary);
+      stroke-width: 2.5;
+    }
+
+    .header-title {
+      flex-grow: 1;
+    }
+
+    .header-title h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    /* Header Section */
+    .welcome-section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 2.5rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .welcome-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .midwife-avatar {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--soft-sage), var(--soft-blue));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(207, 232, 229, 0.3);
+      flex-shrink: 0;
+    }
+
+    .midwife-avatar svg {
+      width: 35px;
+      height: 35px;
+      color: var(--text-primary);
+    }
+
+    .welcome-info h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 0.25rem 0;
+    }
+
+    .welcome-info p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .welcome-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-tertiary);
+      margin-top: 0.75rem;
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .menu-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: var(--soft-sage);
+    }
+
+    .menu-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--soft-sage), var(--soft-blue));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(207, 232, 229, 0.25);
+    }
+
+    .menu-icon svg {
+      width: 30px;
+      height: 30px;
+      color: var(--text-primary);
+      stroke-width: 1.5;
+    }
+
+    .menu-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .menu-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .menu-arrow {
+      width: 24px;
+      height: 24px;
+      color: var(--soft-sage);
+      opacity: 0;
+      transition: all 0.3s ease;
+      margin-top: auto;
+    }
+
+    .menu-card:hover .menu-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+      .main-container {
+        padding: 1.5rem 0.75rem;
+      }
+
+      .welcome-section {
+        padding: 1.5rem;
+      }
+
+      .welcome-header {
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .midwife-avatar {
+        width: 60px;
+        height: 60px;
+      }
+
+      .midwife-avatar svg {
+        width: 30px;
+        height: 30px;
+      }
+
+      .welcome-info h1 {
+        font-size: 1.4rem;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .menu-card {
+        padding: 1.5rem;
+      }
+
+      .menu-icon {
+        width: 50px;
+        height: 50px;
+      }
+
+      .menu-icon svg {
+        width: 25px;
+        height: 25px;
+      }
+
+      .menu-card h3 {
+        font-size: 1rem;
+      }
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body>
+  <div class="main-container">
+   <div class="content-wrapper"><!-- Welcome Section -->
+    <div class="welcome-section">
+     <div class="welcome-header">
+      <div class="midwife-avatar">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+       </svg>
+      </div>
+      <div class="welcome-info">
+       <h1 id="welcomeTitle">Selamat Datang, Bidan Siti</h1>
+       <p id="welcomeMessage">Dashboard Manajemen Kesehatan Ibu Hamil</p>
+       <div class="welcome-subtitle">
+        📊 Kelola data pasien dengan mudah
+       </div>
+      </div>
+     </div>
+    </div><!-- Menu Grid -->
+    <div class="menu-grid" id="menuGrid"><!-- Menu 1: Post Test -->
+     <div class="menu-card" onclick="handleMenuClick('posttest')">
+      <div class="menu-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7 12a5 5 0 1110 0A5 5 0 017 12z" />
+       </svg>
+      </div>
+      <h3 id="menu1Title">Hasil Post Test</h3>
+      <p>Lihat hasil tes post-test pasien</p>
+      <svg class="menu-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+     </div><!-- Menu 2: SRQ Results -->
+     <div class="menu-card" onclick="handleMenuClick('srq')">
+      <div class="menu-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+       </svg>
+      </div>
+      <h3 id="menu2Title">Hasil SRQ Pasien</h3>
+      <p>Tabel data hasil skrining kesehatan mental</p>
+      <svg class="menu-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+     </div><!-- Menu 3: Lab Results -->
+     <div class="menu-card" onclick="handleMenuClick('lab')">
+      <div class="menu-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.452a6 6 0 00-3.036 0l-2.387.452a2 2 0 00-1.022.547m19.5-3.405a2 2 0 00-1.023-.547l-2.387-.452a6 6 0 00-3.036 0l-2.387.452a2 2 0 00-1.022.547m0-3.405a2 2 0 00-1.022-.547l-2.387-.452a6 6 0 00-3.036 0l-2.387.452a2 2 0 00-1.022.547" />
+       </svg>
+      </div>
+      <h3 id="menu3Title">Hasil Lab Pasien</h3>
+      <p>Data hasil pemeriksaan laboratorium</p>
+      <svg class="menu-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+     </div><!-- Menu 4: Referrals -->
+     <div class="menu-card" onclick="handleMenuClick('referral')">
+      <div class="menu-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+       </svg>
+      </div>
+      <h3 id="menu4Title">Rujukan</h3>
+      <p>Kelola surat rujukan pasien</p>
+      <svg class="menu-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+     </div><!-- Menu 5: Certificate -->
+     <div class="menu-card" onclick="handleMenuClick('certificate')">
+      <div class="menu-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+       </svg>
+      </div>
+      <h3 id="menu5Title">Sertifikat Layak Nikah</h3>
+      <p>Kelola sertifikat pemeriksaan pranikah</p>
+      <svg class="menu-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      page_title: 'Dashboard Bidan',
+      welcome_message: 'Dashboard Manajemen Kesehatan Ibu Hamil',
+      menu_1_title: 'Hasil Post Test',
+      menu_2_title: 'Hasil SRQ Pasien',
+      menu_3_title: 'Hasil Lab Pasien',
+      menu_4_title: 'Rujukan',
+      menu_5_title: 'Sertifikat Layak Nikah'
+    };
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          // Update welcome message
+          document.getElementById('welcomeMessage').textContent = config.welcome_message || defaultConfig.welcome_message;
+
+          // Update menu titles
+          document.getElementById('menu1Title').textContent = config.menu_1_title || defaultConfig.menu_1_title;
+          document.getElementById('menu2Title').textContent = config.menu_2_title || defaultConfig.menu_2_title;
+          document.getElementById('menu3Title').textContent = config.menu_3_title || defaultConfig.menu_3_title;
+          document.getElementById('menu4Title').textContent = config.menu_4_title || defaultConfig.menu_4_title;
+          document.getElementById('menu5Title').textContent = config.menu_5_title || defaultConfig.menu_5_title;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['page_title', config.page_title || defaultConfig.page_title],
+          ['welcome_message', config.welcome_message || defaultConfig.welcome_message],
+          ['menu_1_title', config.menu_1_title || defaultConfig.menu_1_title],
+          ['menu_2_title', config.menu_2_title || defaultConfig.menu_2_title],
+          ['menu_3_title', config.menu_3_title || defaultConfig.menu_3_title],
+          ['menu_4_title', config.menu_4_title || defaultConfig.menu_4_title],
+          ['menu_5_title', config.menu_5_title || defaultConfig.menu_5_title]
+        ])
+      });
+    }
+
+    // Handle menu clicks
+    function handleMenuClick(menuType) {
+      const messages = {
+        posttest: 'Membuka halaman Hasil Post Test Pasien...',
+        srq: 'Membuka halaman Hasil SRQ Pasien...',
+        lab: 'Membuka halaman Hasil Lab Pasien...',
+        referral: 'Membuka halaman Rujukan...',
+        certificate: 'Membuka halaman Sertifikat Layak Nikah...'
+      };
+
+      // Show simple notification
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #CFE8E5, #B8D8D4);
+        color: #2D3748;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(207, 232, 229, 0.4);
+        font-weight: 600;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+      `;
+      notification.textContent = messages[menuType];
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+
+    // Add animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d0af49e812b910a',t:'MTc3MTU1ODU0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

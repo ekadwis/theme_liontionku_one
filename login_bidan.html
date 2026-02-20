@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Bidan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --soft-sage: #CFE8E5;
+      --soft-lavender: #E6E6FA;
+      --soft-blue: #D6E6F2;
+      --soft-beige: #FDF6EC;
+      --text-primary: #2D3748;
+      --text-secondary: #718096;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--soft-beige) 0%, var(--soft-blue) 50%, var(--soft-lavender) 100%);
+      min-height: 100%;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 450px;
+      padding: 2rem 1rem;
+    }
+
+    /* Back Button Header */
+    .back-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-back:hover {
+      background: var(--soft-sage);
+      transform: translateX(-4px);
+      border-color: var(--soft-sage);
+    }
+
+    .btn-back svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-primary);
+      stroke-width: 2.5;
+    }
+
+    /* Login Card */
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 28px;
+      padding: 3rem 2.5rem;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Header Section */
+    .login-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .icon-container {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, var(--soft-sage), var(--soft-blue));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(207, 232, 229, 0.3);
+    }
+
+    .icon-container svg {
+      width: 50px;
+      height: 50px;
+      color: var(--text-primary);
+    }
+
+    .login-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .login-header p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* Form Group */
+    .form-group-custom {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group-custom label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .form-group-custom input {
+      width: 100%;
+      padding: 0.95rem 1.25rem;
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      border-radius: 14px;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      background: rgba(207, 232, 229, 0.05);
+      transition: all 0.3s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .form-group-custom input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .form-group-custom input:focus {
+      outline: none;
+      border-color: var(--soft-sage);
+      background: rgba(207, 232, 229, 0.1);
+      box-shadow: 0 0 0 3px rgba(207, 232, 229, 0.1);
+    }
+
+    /* Form Actions */
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--soft-sage), #B8D8D4);
+      border: none;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 8px 24px rgba(207, 232, 229, 0.4);
+    }
+
+    .btn-login:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(207, 232, 229, 0.6);
+    }
+
+    .btn-login:active {
+      transform: translateY(-1px);
+    }
+
+    .btn-back-bottom {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back-bottom:hover {
+      background: rgba(207, 232, 229, 0.1);
+      border-color: var(--soft-sage);
+    }
+
+    /* Footer Text */
+    .login-footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .login-footer a {
+      color: var(--soft-sage);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .login-footer a:hover {
+      color: #B8D8D4;
+    }
+
+    /* Success/Error Message */
+    .message {
+      padding: 0.95rem 1.25rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: rgba(168, 213, 186, 0.15);
+      color: #2D5F47;
+      border: 2px solid rgba(168, 213, 186, 0.5);
+    }
+
+    .message.error {
+      background: rgba(232, 180, 184, 0.15);
+      color: #8B3A3F;
+      border: 2px solid rgba(232, 180, 184, 0.5);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+      .main-container {
+        padding: 1.5rem 1rem;
+      }
+
+      .login-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .login-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .icon-container {
+        width: 80px;
+        height: 80px;
+      }
+
+      .icon-container svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="main-container"><!-- Back Button -->
+   <div class="back-header"><button class="btn-back" id="backButton" onclick="handleBack()" title="Kembali">
+     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+     </svg></button>
+   </div><!-- Login Card -->
+   <div class="login-card"><!-- Header -->
+    <div class="login-header">
+     <div class="icon-container">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+      </svg>
+     </div>
+     <h1 id="pageTitle">Login Bidan</h1>
+     <p id="subtitle">Masuk ke portal bidan kesehatan</p>
+    </div><!-- Message Alert -->
+    <div class="message" id="messageAlert"></div><!-- Login Form -->
+    <form id="loginForm" onsubmit="handleLogin(event)"><!-- Username Field -->
+     <div class="form-group-custom"><label for="username" id="usernameLabel">Username Bidan</label> <input type="text" id="username" placeholder="Masukkan username Anda" required autocomplete="off">
+     </div><!-- Password Field -->
+     <div class="form-group-custom"><label for="password" id="passwordLabel">Password</label> <input type="password" id="password" placeholder="Masukkan password Anda" required autocomplete="off">
+     </div><!-- Form Actions -->
+     <div class="form-actions"><button type="submit" class="btn-login" id="loginButton"> <span id="loginButtonText">Login</span> </button> <button type="button" class="btn-back-bottom" onclick="handleBack()"> <span id="backButtonText">Kembali ke Halaman Pembuka</span> </button>
+     </div>
+    </form><!-- Footer -->
+    <div class="login-footer">
+     <p>Hubungi administrator jika Anda lupa username atau password.</p>
+    </div>
+   </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      page_title: 'Login Bidan',
+      subtitle: 'Masuk ke portal bidan kesehatan',
+      username_label: 'Username Bidan',
+      password_label: 'Password',
+      login_button_text: 'Login',
+      back_button_text: 'Kembali ke Halaman Pembuka',
+      background_color: '#FDF6EC',
+      surface_color: '#FFFFFF',
+      text_color: '#2D3748',
+      primary_action_color: '#CFE8E5',
+      secondary_action_color: '#E6E6FA'
+    };
+
+    // Dummy credentials for demo
+    const demoCredentials = {
+      username: 'bidan001',
+      password: 'password123'
+    };
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          // Update page title
+          document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
+
+          // Update subtitle
+          document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+
+          // Update labels
+          document.getElementById('usernameLabel').textContent = config.username_label || defaultConfig.username_label;
+          document.getElementById('passwordLabel').textContent = config.password_label || defaultConfig.password_label;
+          document.getElementById('loginButtonText').textContent = config.login_button_text || defaultConfig.login_button_text;
+          document.getElementById('backButtonText').textContent = config.back_button_text || defaultConfig.back_button_text;
+
+          // Apply colors
+          const bgColor = config.background_color || defaultConfig.background_color;
+          const surfaceColor = config.surface_color || defaultConfig.surface_color;
+          const textColor = config.text_color || defaultConfig.text_color;
+          const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+          const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+          document.body.style.background = `linear-gradient(135deg, ${bgColor} 0%, #D6E6F2 50%, ${secondaryColor} 100%)`;
+
+          document.querySelectorAll('.login-card').forEach(el => {
+            el.style.background = surfaceColor ? `rgba(255, 255, 255, 0.95)` : '';
+          });
+
+          document.querySelectorAll('.login-header h1').forEach(el => {
+            el.style.color = textColor;
+          });
+
+          document.querySelectorAll('.btn-login').forEach(btn => {
+            btn.style.background = `linear-gradient(135deg, ${primaryColor}, #B8D8D4)`;
+          });
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['page_title', config.page_title || defaultConfig.page_title],
+          ['subtitle', config.subtitle || defaultConfig.subtitle],
+          ['username_label', config.username_label || defaultConfig.username_label],
+          ['password_label', config.password_label || defaultConfig.password_label],
+          ['login_button_text', config.login_button_text || defaultConfig.login_button_text],
+          ['back_button_text', config.back_button_text || defaultConfig.back_button_text]
+        ])
+      });
+    }
+
+    // Handle login form submission
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const messageAlert = document.getElementById('messageAlert');
+      const loginButton = document.getElementById('loginButton');
+
+      // Disable button during validation
+      loginButton.disabled = true;
+
+      // Validate credentials
+      if (username === demoCredentials.username && password === demoCredentials.password) {
+        // Success
+        messageAlert.textContent = '✓ Login berhasil! Selamat datang Bidan.';
+        messageAlert.className = 'message show success';
+        loginButton.disabled = false;
+
+        // Redirect after a short delay
+        setTimeout(() => {
+          // In a real app, this would redirect to dashboard
+          // window.location.href = '/bidan/dashboard';
+          showMessage('Mengarahkan ke dashboard...', 'success');
+        }, 1500);
+      } else {
+        // Error
+        messageAlert.textContent = '✗ Username atau password salah. Silakan coba lagi.';
+        messageAlert.className = 'message show error';
+        loginButton.disabled = false;
+
+        // Clear password field
+        document.getElementById('password').value = '';
+      }
+    }
+
+    // Handle back button
+    function handleBack() {
+      // In a real app, this would navigate back
+      // window.location.href = '/';
+      showMessage('Kembali ke halaman pembuka...', 'success');
+    }
+
+    // Show message helper
+    function showMessage(text, type) {
+      const messageAlert = document.getElementById('messageAlert');
+      messageAlert.textContent = text;
+      messageAlert.className = `message show ${type}`;
+
+      setTimeout(() => {
+        messageAlert.classList.remove('show');
+      }, 3000);
+    }
+
+    // Demo credentials helper
+    console.log('Demo Credentials:');
+    console.log('Username:', demoCredentials.username);
+    console.log('Password:', demoCredentials.password);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d0aef988365910a',t:'MTc3MTU1ODMzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
