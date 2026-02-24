@@ -1000,7 +1000,10 @@
 
     // Handle back button
     function handleBack() {
-      alert('Kembali ke halaman Dashboard Bidan');
+      alert('Kembali ke Dashboard Bidan...');
+      setTimeout(() => {
+        window.location.href = 'dashboard_bidan.html';
+      }, 500);
     }
 
     // Initialize Element SDK

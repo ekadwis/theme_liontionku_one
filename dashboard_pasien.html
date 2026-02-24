@@ -493,7 +493,7 @@
        </div>
        <div class="patient-name" id="patientNameDisplay">
         Budi Santoso
-       </div><button class="btn-logout" onclick="handleLogout()" id="logoutBtn">Logout</button>
+       </div><a href="login_pasien.html" class="btn-logout" id="logoutBtn">Logout</a>
       </div>
      </div>
     </div>
@@ -504,22 +504,22 @@
       <li class="menu-item"><a href="#" class="menu-link active" onclick="activeMenu(event, 'dashboard')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect> <rect x="14" y="3" width="7" height="7"></rect> <rect x="14" y="14" width="7" height="7"></rect> <rect x="3" y="14" width="7" height="7"></rect>
          </svg></span> <span>Dashboard</span> </a></li>
-      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'ebook')"> <span class="menu-icon">
+      <li class="menu-item"><a href="baca_ebook.html" class="menu-link" onclick="activeMenu(event, 'ebook')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /> <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
          </svg></span> <span>Baca E-book</span> </a></li>
-      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'posttest')"> <span class="menu-icon">
+      <li class="menu-item"><a href="post_test.html" class="menu-link" onclick="activeMenu(event, 'posttest')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4" /> <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
          </svg></span> <span>Post Test</span> </a></li>
-      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'srq')"> <span class="menu-icon">
+      <li class="menu-item"><a href="test_srq.html" class="menu-link"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" />
          </svg></span> <span>Test SRQ</span> </a></li>
-      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'hasil-srq')"> <span class="menu-icon">
+      <li class="menu-item"><a href="hasil_srq.html" class="menu-link" onclick="activeMenu(event, 'hasil-srq')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
          </svg></span> <span>Hasil SRQ</span> </a></li>
-      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'hasil-lab')"> <span class="menu-icon">
+      <li class="menu-item"><a href="hasil_lab.html" class="menu-link" onclick="activeMenu(event, 'hasil-lab')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1" /> <path d="M12 1v6m0 6v6" /> <path d="M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24" /> <path d="M1 12h6m6 0h6" /> <path d="M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" />
          </svg></span> <span>Hasil Lab</span> </a></li>
-      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'hasil-akhir')"> <span class="menu-icon">
+      <li class="menu-item"><a href="hasil_pemeriksaan.html" class="menu-link" onclick="activeMenu(event, 'hasil-akhir')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4" /> <circle cx="12" cy="12" r="10" />
          </svg></span> <span>Hasil Akhir Pemeriksaan</span> </a></li>
       <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'rujukan')"> <span class="menu-icon">
@@ -558,7 +558,7 @@
          <div class="progress-bar-fill" style="width: 100%"></div>
         </div>
        </div>
-       <p class="progress-description">Anda telah menyelesaikan membaca semua materi edukasi kesehatan pranikah</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Lihat Detail →</a>
+       <p class="progress-description">Anda telah menyelesaikan membaca semua materi edukasi kesehatan pranikah</p><a href="baca_ebook.html" class="progress-action">Lihat Detail →</a>
       </div><!-- Post Test Card -->
       <div class="progress-card">
        <div class="progress-card-header">
@@ -579,7 +579,7 @@
          <div class="progress-bar-fill" style="width: 85%"></div>
         </div>
        </div>
-       <p class="progress-description">Skor test Anda sangat baik. Silakan lanjutkan ke tahap pemeriksaan berikutnya</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Lihat Detail →</a>
+       <p class="progress-description">Skor test Anda sangat baik. Silakan lanjutkan ke tahap pemeriksaan berikutnya</p><a href="post_test.html" class="progress-action">Lihat Detail →</a>
       </div><!-- Test SRQ Card -->
       <div class="progress-card">
        <div class="progress-card-header">
@@ -600,7 +600,7 @@
          <div class="progress-bar-fill" style="width: 0%"></div>
         </div>
        </div>
-       <p class="progress-description">Jadwalkan test psikologi dengan tenaga medis profesional kami</p><button class="progress-action" onclick="handleMenuClick(event)">Jadwalkan Sekarang →</button>
+       <p class="progress-description">Jadwalkan test psikologi dengan tenaga medis profesional kami</p><a href="test_srq.html" class="progress-action">Jadwalkan Sekarang →</a>
       </div><!-- Hasil Lab Card -->
       <div class="progress-card">
        <div class="progress-card-header">
@@ -621,7 +621,7 @@
          <div class="progress-bar-fill" style="width: 60%; background: linear-gradient(90deg, #E8A949 0%, #F0B95A 100%)"></div>
         </div>
        </div>
-       <p class="progress-description">Hasil lab sedang diproses. Estimasi selesai dalam 2-3 hari kerja</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Status Laboratorium →</a>
+       <p class="progress-description">Hasil lab sedang diproses. Estimasi selesai dalam 2-3 hari kerja</p><a href="hasil_lab.html" class="progress-action">Status Laboratorium →</a>
       </div><!-- Hasil Akhir Card -->
       <div class="progress-card">
        <div class="progress-card-header">
@@ -642,7 +642,7 @@
          <div class="progress-bar-fill" style="width: 0%"></div>
         </div>
        </div>
-       <p class="progress-description">Hasil akhir akan tersedia setelah semua pemeriksaan selesai</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Lihat Detail →</a>
+       <p class="progress-description">Hasil akhir akan tersedia setelah semua pemeriksaan selesai</p><a href="hasil_pemeriksaan.html" class="progress-action">Lihat Detail →</a>
       </div><!-- Sertifikat Card -->
       <div class="progress-card">
        <div class="progress-card-header">
