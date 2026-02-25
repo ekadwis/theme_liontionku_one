@@ -24,6 +24,7 @@
         --text-tertiary: #a0aec0;
         --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         --card-shadow-hover: 0 12px 32px rgba(207, 232, 229, 0.3);
+        --primary-color: #4A9D8E;
       }
 
       * {
@@ -49,7 +50,7 @@
       }
 
       .main-container {
-        min-height: 100%;
+        min-height: 100vh;
         padding: 2rem 1rem;
       }
 
@@ -86,6 +87,24 @@
         transform: translateX(-4px);
         border-color: var(--soft-sage);
       }
+      
+      .btn-logout {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #5AADA0 100%);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      background: linear-gradient(135deg, #3D8A7D 0%, var(--primary-color) 100%);
+      color: white;
+      transform: translateY(-2px);
+    }
 
       .btn-back svg {
         width: 20px;
@@ -107,13 +126,14 @@
 
       /* Header Section */
       .welcome-section {
-        background: rgba(255, 255, 255, 0.95);
+        background: #ffffff;
+        border: none;
         border-radius: 24px;
         padding: 2.5rem;
         box-shadow: var(--card-shadow);
         margin-bottom: 2.5rem;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        
       }
 
       .welcome-header {
@@ -305,28 +325,37 @@
       <div class="content-wrapper">
         <!-- Welcome Section -->
         <div class="welcome-section">
-          <div class="welcome-header">
-            <div class="midwife-avatar">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewbox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                />
-              </svg>
-            </div>
-            <div class="welcome-info">
-              <h1 id="welcomeTitle">Selamat Datang, Bidan Siti</h1>
-              <p id="welcomeMessage">Dashboard Manajemen Kesehatan Ibu Hamil</p>
-              <div class="welcome-subtitle">
-                📊 Kelola data pasien dengan mudah
+          <div class="welcome-header" style="justify-content: space-between;">
+            <!-- Kiri: Avatar + Info -->
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+              <div class="midwife-avatar">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewbox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                  />
+                </svg>
+              </div>
+          
+              <div class="welcome-info">
+                <h1 id="welcomeTitle">Selamat Datang, Bidan Siti</h1>
+                <p id="welcomeMessage">Dashboard Manajemen Kesehatan Ibu Hamil</p>
+                <div class="welcome-subtitle">
+                  📊 Kelola data pasien dengan mudah
+                </div>
               </div>
             </div>
+          
+            <!-- 👉 Kanan: Logout -->
+            <a href="login_bidan.html" class="btn-logout" id="logoutBtn">
+              Logout
+            </a>
           </div>
         </div>
         <!-- Menu Grid -->
@@ -395,8 +424,8 @@
               />
             </svg>
           </div>
-          <!-- Menu 3: Lab Results -->
-          <div class="menu-card" onclick="handleMenuClick('lab')">
+          <!-- Menu 3: Pemeriksaan Fisik -->
+          <div class="menu-card" onclick="handleMenuClick('fisik')">
             <div class="menu-icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -407,76 +436,12 @@
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.452a6 6 0 00-3.036 0l-2.387.452a2 2 0 00-1.022.547m19.5-3.405a2 2 0 00-1.023-.547l-2.387-.452a6 6 0 00-3.036 0l-2.387.452a2 2 0 00-1.022.547m0-3.405a2 2 0 00-1.022-.547l-2.387-.452a6 6 0 00-3.036 0l-2.387.452a2 2 0 00-1.022.547"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                 />
               </svg>
             </div>
-            <h3 id="menu3Title">Hasil Lab Pasien</h3>
-            <p>Data hasil pemeriksaan laboratorium</p>
-            <svg
-              class="menu-arrow"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewbox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </div>
-          <!-- Menu 4: Referrals -->
-          <div class="menu-card" onclick="handleMenuClick('referral')">
-            <div class="menu-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewbox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <h3 id="menu4Title">Rujukan</h3>
-            <p>Kelola surat rujukan pasien</p>
-            <svg
-              class="menu-arrow"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewbox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </div>
-          <!-- Menu 5: Certificate -->
-          <div class="menu-card" onclick="handleMenuClick('certificate')">
-            <div class="menu-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewbox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-                />
-              </svg>
-            </div>
-            <h3 id="menu5Title">Sertifikat Layak Nikah</h3>
-            <p>Kelola sertifikat pemeriksaan pranikah</p>
+            <h3 id="menu2Title">Pemeriksaan Fisik Pasien</h3>
+            <p>Tabel data hasil pemeriksaan fisik pasien</p>
             <svg
               class="menu-arrow"
               xmlns="http://www.w3.org/2000/svg"
@@ -570,7 +535,7 @@
         const messages = {
           posttest: 'Membuka halaman Hasil Post Test Pasien...',
           srq: 'Membuka halaman Hasil SRQ Pasien...',
-          lab: 'Membuka halaman Hasil Lab Pasien...',
+          fisik: 'Membuka halaman Pemeriksaan Fisik Pasien...',
           referral: 'Membuka halaman Rujukan...',
           certificate: 'Membuka halaman Sertifikat Layak Nikah...',
         };
@@ -597,9 +562,9 @@
         const routes = {
           posttest: 'hasil_post_test.html',
           srq: 'hasil_srq_test.html',
-          lab: 'hasil_lab_test.html',
+          fisik: 'pemeriksaan_fisik_pasien.html',
           referral: 'rujukan_pasien.html',
-          certificate: 'certificate_pasien.html',
+          certificate: 'https://sertifikat-dinkes.jakarta.go.id/check',
         };
 
         // ⏱️ Redirect setelah 1.5 detik (jika ada rutenya)

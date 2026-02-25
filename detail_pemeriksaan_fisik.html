@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Pemeriksaan Fisik Pasien</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --soft-sage: #CFE8E5;
+      --soft-lavender: #E6E6FA;
+      --soft-blue: #D6E6F2;
+      --soft-beige: #FDF6EC;
+      --text-primary: #2D3748;
+      --text-secondary: #718096;
+      --border-color: #E2E8F0;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+    }
+    
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--soft-beige) 0%, #fff 50%, var(--soft-blue) 100%);
+      color: var(--text-primary);
+      min-height: 100%;
+    }
+    
+    .main-wrapper {
+      width: 100%;
+      min-height: 100%;
+      overflow-y: auto;
+      padding-bottom: 2rem;
+    }
+    
+    .page-header {
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .btn-back {
+      background: var(--soft-sage);
+      border: none;
+      color: var(--text-primary);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-back:hover {
+      background: #b8d9d5;
+      transform: translateX(-2px);
+    }
+    
+    .breadcrumb-custom {
+      background: var(--soft-lavender);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .breadcrumb-custom .breadcrumb-item.active {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    .breadcrumb-custom .breadcrumb-item + .breadcrumb-item::before {
+      content: "/";
+      color: var(--text-secondary);
+    }
+    
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-custom {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    
+    .card-header-custom {
+      background: var(--soft-sage);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .card-header-custom.lavender {
+      background: var(--soft-lavender);
+    }
+    
+    .card-header-custom.blue {
+      background: var(--soft-blue);
+    }
+    
+    .card-header-custom.beige {
+      background: var(--soft-beige);
+    }
+    
+    .card-header-custom h5 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .card-body-custom {
+      padding: 1.5rem;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .info-item {
+      background: var(--soft-beige);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+    }
+    
+    .info-item label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+    
+    .info-item span {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+    
+    .form-label-custom {
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-control-custom {
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .form-control-custom:focus {
+      border-color: var(--soft-sage);
+      box-shadow: 0 0 0 4px rgba(207, 232, 229, 0.3);
+      outline: none;
+    }
+    
+    .input-group-text-custom {
+      background: var(--soft-blue);
+      border: 2px solid var(--border-color);
+      border-left: none;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .form-control-custom.with-unit {
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+    }
+    
+    .result-card {
+      background: linear-gradient(135deg, var(--soft-lavender) 0%, var(--soft-blue) 100%);
+      border: none;
+    }
+    
+    .result-item {
+      background: rgba(255,255,255,0.8);
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    
+    .result-item label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .result-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    
+    .result-value.small {
+      font-size: 1.25rem;
+    }
+    
+    .badge-status {
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      display: inline-block;
+    }
+    
+    .badge-underweight {
+      background: #E3F2FD;
+      color: #1565C0;
+    }
+    
+    .badge-normal {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+    
+    .badge-overweight {
+      background: #FFF3E0;
+      color: #EF6C00;
+    }
+    
+    .badge-obese1 {
+      background: #FFEBEE;
+      color: #C62828;
+    }
+    
+    .badge-obese2 {
+      background: #F3E5F5;
+      color: #7B1FA2;
+    }
+    
+    .badge-risk {
+      background: #FFEBEE;
+      color: #C62828;
+    }
+    
+    .badge-safe {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+    
+    .progress-imt {
+      height: 12px;
+      border-radius: 50px;
+      background: #E2E8F0;
+      overflow: visible;
+      position: relative;
+    }
+    
+    .progress-bar-imt {
+      border-radius: 50px;
+      transition: width 0.5s ease, background 0.3s ease;
+      position: relative;
+    }
+    
+    .progress-markers {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+    }
+    
+    .btn-action {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    
+    .btn-save {
+      background: var(--soft-sage);
+      color: var(--text-primary);
+    }
+    
+    .btn-save:hover {
+      background: #b8d9d5;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btn-reset {
+      background: var(--soft-beige);
+      color: var(--text-primary);
+    }
+    
+    .btn-reset:hover {
+      background: #f5ead9;
+    }
+    
+    .btn-print {
+      background: var(--soft-blue);
+      color: var(--text-primary);
+    }
+    
+    .btn-print:hover {
+      background: #c4d9eb;
+    }
+    
+    .imt-scale {
+      display: flex;
+      height: 8px;
+      border-radius: 50px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    
+    .imt-scale-segment {
+      flex: 1;
+    }
+    
+    .imt-scale-underweight { background: #90CAF9; }
+    .imt-scale-normal { background: #A5D6A7; }
+    .imt-scale-overweight { background: #FFCC80; }
+    .imt-scale-obese1 { background: #EF9A9A; }
+    .imt-scale-obese2 { background: #CE93D8; }
+    
+    .imt-pointer {
+      width: 4px;
+      height: 20px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      position: absolute;
+      top: -6px;
+      transform: translateX(-50%);
+      transition: left 0.5s ease;
+    }
+    
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 1.5rem;
+      }
+      
+      .card-body-custom {
+        padding: 1rem;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .result-value {
+        font-size: 1.5rem;
+      }
+      
+      .btn-action {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="main-wrapper"><!-- Header -->
+   <div class="page-header">
+    <div class="container"><button class="btn-back" onclick="handleBack()"> <i class="bi bi-arrow-left me-2"></i>Kembali ke Daftar Pemeriksaan </button>
+    </div>
+   </div><!-- Main Content -->
+   <div class="container py-4"><!-- Breadcrumb -->
+    <nav class="breadcrumb-custom" aria-label="breadcrumb">
+     <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Dashboard Bidan</a></li>
+      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Pemeriksaan Fisik</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Detail</li>
+     </ol>
+    </nav><!-- Page Title -->
+    <h1 class="page-title" id="pageTitle">Detail Pemeriksaan Fisik Pasien</h1>
+    <p class="text-secondary mb-4">Isi data pemeriksaan fisik pasien dengan lengkap dan akurat</p>
+    <div class="row">
+     <div class="col-lg-8"><!-- Patient Info Card -->
+      <div class="card-custom">
+       <div class="card-header-custom">
+        <h5><i class="bi bi-person-circle"></i> Informasi Pasien</h5>
+       </div>
+       <div class="card-body-custom">
+        <div class="info-grid">
+         <div class="info-item"><label>Nama Pasien</label> <span id="patientName">Sari Dewi Lestari</span>
+         </div>
+         <div class="info-item"><label>No. Rekam Medis</label> <span>RM-2024-00847</span>
+         </div>
+         <div class="info-item"><label>Jenis Kelamin</label> <span id="genderDisplay">Perempuan</span>
+         </div>
+         <div class="info-item"><label>Usia</label> <span>28 Tahun</span>
+         </div>
+         <div class="info-item"><label>Tanggal Pemeriksaan</label> <span id="examDate">-</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Physical Examination Form -->
+      <div class="card-custom">
+       <div class="card-header-custom lavender">
+        <h5><i class="bi bi-clipboard2-pulse"></i> Form Pemeriksaan Fisik</h5>
+       </div>
+       <div class="card-body-custom">
+        <form id="examForm"><!-- Gender Selection (Hidden in real app, but needed for calculation) -->
+         <div class="mb-4"><label class="form-label-custom">Jenis Kelamin Pasien</label>
+          <div class="d-flex gap-3">
+           <div class="form-check"><input class="form-check-input" type="radio" name="gender" id="genderMale" value="male"> <label class="form-check-label" for="genderMale">Laki-laki</label>
+           </div>
+           <div class="form-check"><input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female" checked> <label class="form-check-label" for="genderFemale">Perempuan</label>
+           </div>
+          </div>
+         </div>
+         <div class="row"><!-- Blood Pressure -->
+          <div class="col-md-6 mb-4"><label class="form-label-custom" for="bloodPressureSystolic"> <i class="bi bi-heart-pulse me-1"></i> Tekanan Darah Sistolik </label>
+           <div class="input-group"><input type="number" class="form-control form-control-custom with-unit" id="bloodPressureSystolic" placeholder="120" min="60" max="250"> <span class="input-group-text input-group-text-custom">mmHg</span>
+           </div>
+          </div>
+          <div class="col-md-6 mb-4"><label class="form-label-custom" for="bloodPressureDiastolic"> <i class="bi bi-heart-pulse me-1"></i> Tekanan Darah Diastolik </label>
+           <div class="input-group"><input type="number" class="form-control form-control-custom with-unit" id="bloodPressureDiastolic" placeholder="80" min="40" max="150"> <span class="input-group-text input-group-text-custom">mmHg</span>
+           </div>
+          </div><!-- Weight -->
+          <div class="col-md-6 mb-4"><label class="form-label-custom" for="weight"> <i class="bi bi-speedometer me-1"></i> Berat Badan </label>
+           <div class="input-group"><input type="number" class="form-control form-control-custom with-unit" id="weight" placeholder="55" min="20" max="300" step="0.1"> <span class="input-group-text input-group-text-custom">kg</span>
+           </div>
+          </div><!-- Height -->
+          <div class="col-md-6 mb-4"><label class="form-label-custom" for="height"> <i class="bi bi-rulers me-1"></i> Tinggi Badan </label>
+           <div class="input-group"><input type="number" class="form-control form-control-custom with-unit" id="height" placeholder="160" min="100" max="250" step="0.1"> <span class="input-group-text input-group-text-custom">cm</span>
+           </div>
+          </div><!-- Upper Arm Circumference -->
+          <div class="col-md-6 mb-4"><label class="form-label-custom" for="armCircumference"> <i class="bi bi-circle me-1"></i> Lingkar Lengan Atas (LILA) </label>
+           <div class="input-group"><input type="number" class="form-control form-control-custom with-unit" id="armCircumference" placeholder="25" min="10" max="60" step="0.1"> <span class="input-group-text input-group-text-custom">cm</span>
+           </div>
+          </div><!-- Waist Circumference -->
+          <div class="col-md-6 mb-4"><label class="form-label-custom" for="waistCircumference"> <i class="bi bi-circle me-1"></i> Lingkar Perut / Pinggang </label>
+           <div class="input-group"><input type="number" class="form-control form-control-custom with-unit" id="waistCircumference" placeholder="75" min="40" max="200" step="0.1"> <span class="input-group-text input-group-text-custom">cm</span>
+           </div>
+          </div>
+         </div>
+        </form>
+       </div>
+      </div>
+     </div>
+     <div class="col-lg-4"><!-- Results Card -->
+      <div class="card-custom result-card">
+       <div class="card-header-custom blue">
+        <h5><i class="bi bi-calculator"></i> Hasil Perhitungan</h5>
+       </div>
+       <div class="card-body-custom"><!-- IMT Value -->
+        <div class="result-item mb-3"><label>Indeks Massa Tubuh (IMT)</label>
+         <div class="result-value" id="imtValue">
+          --
+         </div><small class="text-secondary">kg/m²</small>
+        </div><!-- IMT Category -->
+        <div class="result-item mb-3"><label>Kategori IMT</label>
+         <div id="imtCategory"><span class="badge-status" style="background: #E2E8F0; color: #718096;"> Masukkan data </span>
+         </div>
+        </div><!-- IMT Progress Bar -->
+        <div class="result-item mb-3"><label>Skala IMT</label>
+         <div class="imt-scale">
+          <div class="imt-scale-segment imt-scale-underweight" title="Underweight"></div>
+          <div class="imt-scale-segment imt-scale-normal" title="Normal"></div>
+          <div class="imt-scale-segment imt-scale-overweight" title="Overweight"></div>
+          <div class="imt-scale-segment imt-scale-obese1" title="Obesitas I"></div>
+          <div class="imt-scale-segment imt-scale-obese2" title="Obesitas II"></div>
+         </div>
+         <div class="progress progress-imt position-relative">
+          <div class="progress-bar progress-bar-imt" role="progressbar" style="width: 0%" id="imtProgressBar"></div>
+          <div class="imt-pointer" id="imtPointer" style="left: 0%"></div>
+         </div>
+         <div class="progress-markers"><span>15</span> <span>18.5</span> <span>23</span> <span>25</span> <span>30</span> <span>40</span>
+         </div>
+        </div><!-- Waist Status -->
+        <div class="result-item"><label>Status Lingkar Perut</label>
+         <div id="waistStatus"><span class="badge-status" style="background: #E2E8F0; color: #718096;"> Masukkan data </span>
+         </div><small class="text-secondary d-block mt-2" id="waistThreshold"> Batas: - cm </small>
+        </div>
+       </div>
+      </div><!-- IMT Reference Card -->
+      <div class="card-custom">
+       <div class="card-header-custom beige">
+        <h5><i class="bi bi-info-circle"></i> Referensi IMT</h5>
+       </div>
+       <div class="card-body-custom">
+        <div class="d-flex flex-column gap-2">
+         <div class="d-flex align-items-center justify-content-between"><span class="badge-status badge-underweight" style="font-size: 0.75rem;">Underweight</span> <small class="text-secondary">&lt; 18,5</small>
+         </div>
+         <div class="d-flex align-items-center justify-content-between"><span class="badge-status badge-normal" style="font-size: 0.75rem;">Normal</span> <small class="text-secondary">18,5 - 22,9</small>
+         </div>
+         <div class="d-flex align-items-center justify-content-between"><span class="badge-status badge-overweight" style="font-size: 0.75rem;">BB Lebih</span> <small class="text-secondary">23 - 24,9</small>
+         </div>
+         <div class="d-flex align-items-center justify-content-between"><span class="badge-status badge-obese1" style="font-size: 0.75rem;">Obesitas I</span> <small class="text-secondary">25 - 29,9</small>
+         </div>
+         <div class="d-flex align-items-center justify-content-between"><span class="badge-status badge-obese2" style="font-size: 0.75rem;">Obesitas II</span> <small class="text-secondary">≥ 30</small>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Action Buttons -->
+    <div class="card-custom mt-2">
+     <div class="card-body-custom">
+      <div class="d-flex flex-wrap gap-3 justify-content-end action-buttons"><button type="button" class="btn-action btn-reset" onclick="resetForm()"> <i class="bi bi-arrow-counterclockwise me-2"></i>Reset </button> <button type="button" class="btn-action btn-save" onclick="handleSave()"> <i class="bi bi-check-circle me-2"></i>Simpan Pemeriksaan </button>
+      </div>
+     </div>
+    </div>
+   </div><!-- Toast Notification -->
+   <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div id="toastNotification" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+     <div class="d-flex">
+      <div class="toast-body" id="toastMessage">
+       Pesan notifikasi
+      </div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      page_title: 'Detail Pemeriksaan Fisik Pasien',
+      patient_name: 'Sari Dewi Lestari',
+      primary_color: '#CFE8E5',
+      secondary_color: '#E6E6FA',
+      accent_color: '#D6E6F2',
+      text_color: '#2D3748',
+      background_color: '#FDF6EC'
+    };
+    
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
+          document.getElementById('patientName').textContent = config.patient_name || defaultConfig.patient_name;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
+            },
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => { config.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => { config.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); }
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => { config.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['page_title', config.page_title || defaultConfig.page_title],
+          ['patient_name', config.patient_name || defaultConfig.patient_name]
+        ])
+      });
+    }
+    
+    // Set current date
+    document.getElementById('examDate').textContent = new Date().toLocaleDateString('id-ID', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    
+    // Calculate IMT and update display
+    function calculateIMT() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+      
+      if (weight && height && weight > 0 && height > 0) {
+        const heightInMeters = height / 100;
+        const imt = weight / (heightInMeters * heightInMeters);
+        
+        // Display IMT value
+        document.getElementById('imtValue').textContent = imt.toFixed(1);
+        
+        // Determine category
+        let category, badgeClass;
+        if (imt < 18.5) {
+          category = 'Berat Badan Kurang (Underweight)';
+          badgeClass = 'badge-underweight';
+        } else if (imt < 23) {
+          category = 'Normal';
+          badgeClass = 'badge-normal';
+        } else if (imt < 25) {
+          category = 'Berat Badan Lebih';
+          badgeClass = 'badge-overweight';
+        } else if (imt < 30) {
+          category = 'Obesitas I';
+          badgeClass = 'badge-obese1';
+        } else {
+          category = 'Obesitas II';
+          badgeClass = 'badge-obese2';
+        }
+        
+        document.getElementById('imtCategory').innerHTML = 
+          `<span class="badge-status ${badgeClass}">${category}</span>`;
+        
+        // Update progress bar
+        const progressPercent = Math.min(Math.max((imt - 15) / 25 * 100, 0), 100);
+        document.getElementById('imtPointer').style.left = `${progressPercent}%`;
+        
+        // Update progress bar color based on category
+        const progressBar = document.getElementById('imtProgressBar');
+        progressBar.style.width = `${progressPercent}%`;
+        
+        if (imt < 18.5) {
+          progressBar.style.background = '#90CAF9';
+        } else if (imt < 23) {
+          progressBar.style.background = '#A5D6A7';
+        } else if (imt < 25) {
+          progressBar.style.background = '#FFCC80';
+        } else if (imt < 30) {
+          progressBar.style.background = '#EF9A9A';
+        } else {
+          progressBar.style.background = '#CE93D8';
+        }
+      } else {
+        document.getElementById('imtValue').textContent = '--';
+        document.getElementById('imtCategory').innerHTML = 
+          `<span class="badge-status" style="background: #E2E8F0; color: #718096;">Masukkan data</span>`;
+        document.getElementById('imtPointer').style.left = '0%';
+        document.getElementById('imtProgressBar').style.width = '0%';
+      }
+    }
+    
+    // Evaluate waist circumference
+    function evaluateWaist() {
+      const waist = parseFloat(document.getElementById('waistCircumference').value);
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+      
+      const threshold = gender === 'male' ? 90 : 80;
+      document.getElementById('waistThreshold').textContent = `Batas: ${threshold} cm (${gender === 'male' ? 'Laki-laki' : 'Perempuan'})`;
+      
+      if (waist && waist > 0) {
+        if (waist > threshold) {
+          document.getElementById('waistStatus').innerHTML = 
+            `<span class="badge-status badge-risk"><i class="bi bi-exclamation-triangle me-1"></i>Risiko Obesitas Sentral</span>`;
+        } else {
+          document.getElementById('waistStatus').innerHTML = 
+            `<span class="badge-status badge-safe"><i class="bi bi-check-circle me-1"></i>Normal</span>`;
+        }
+      } else {
+        document.getElementById('waistStatus').innerHTML = 
+          `<span class="badge-status" style="background: #E2E8F0; color: #718096;">Masukkan data</span>`;
+      }
+    }
+    
+    // Update gender display
+    function updateGenderDisplay() {
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+      document.getElementById('genderDisplay').textContent = gender === 'male' ? 'Laki-laki' : 'Perempuan';
+      evaluateWaist();
+    }
+    
+    // Event listeners
+    document.getElementById('weight').addEventListener('input', calculateIMT);
+    document.getElementById('height').addEventListener('input', calculateIMT);
+    document.getElementById('waistCircumference').addEventListener('input', evaluateWaist);
+    document.querySelectorAll('input[name="gender"]').forEach(radio => {
+      radio.addEventListener('change', updateGenderDisplay);
+    });
+    
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toastNotification');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toastMessage.textContent = message;
+      
+      if (type === 'success') {
+        toast.style.background = '#CFE8E5';
+        toast.style.color = '#2D3748';
+      } else if (type === 'warning') {
+        toast.style.background = '#FFF3E0';
+        toast.style.color = '#E65100';
+      } else {
+        toast.style.background = '#FFEBEE';
+        toast.style.color = '#C62828';
+      }
+      
+      const bsToast = new bootstrap.Toast(toast);
+      bsToast.show();
+    }
+    
+    // Button handlers
+    function handleBack() {
+      showToast('Kembali ke daftar pemeriksaan...', 'success');
+      window.location.href = 'pemeriksaan_fisik_pasien.html'
+    }
+    
+    function handleSave() {
+      const weight = document.getElementById('weight').value;
+      const height = document.getElementById('height').value;
+      
+      if (!weight || !height) {
+        showToast('Mohon isi minimal berat badan dan tinggi badan', 'warning');
+        return;
+      }
+      
+      showToast('Data pemeriksaan berhasil disimpan!', 'success');
+    }
+    
+    function resetForm() {
+      document.getElementById('examForm').reset();
+      document.getElementById('genderFemale').checked = true;
+      
+      // Reset displays
+      document.getElementById('imtValue').textContent = '--';
+      document.getElementById('imtCategory').innerHTML = 
+        `<span class="badge-status" style="background: #E2E8F0; color: #718096;">Masukkan data</span>`;
+      document.getElementById('waistStatus').innerHTML = 
+        `<span class="badge-status" style="background: #E2E8F0; color: #718096;">Masukkan data</span>`;
+      document.getElementById('imtPointer').style.left = '0%';
+      document.getElementById('imtProgressBar').style.width = '0%';
+      document.getElementById('genderDisplay').textContent = 'Perempuan';
+      document.getElementById('waistThreshold').textContent = 'Batas: 80 cm (Perempuan)';
+      
+      showToast('Form berhasil direset', 'success');
+    }
+    
+    function handlePrint() {
+      showToast('Menyiapkan dokumen untuk dicetak...', 'success');
+      setTimeout(() => {
+        window.print();
+      }, 500);
+    }
+    
+    // Initialize waist threshold on load
+    evaluateWaist();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d34864767501be6',t:'MTc3MTk5NDQyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

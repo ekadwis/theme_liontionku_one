@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemeriksaan Fisik Pasien</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --soft-sage: #CFE8E5;
+      --soft-lavender: #E6E6FA;
+      --soft-blue: #D6E6F2;
+      --soft-beige: #FDF6EC;
+      --text-primary: #2D3748;
+      --text-secondary: #718096;
+      --text-tertiary: #A0AEC0;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --status-pending: #FFD4A3;
+      --status-completed: #A8D5BA;
+    }
+
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--soft-beige) 0%, var(--soft-blue) 50%, var(--soft-lavender) 100%);
+      min-height: 100%;
+      color: var(--text-primary);
+      padding: 2rem 1rem;
+    }
+
+    .main-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header Section */
+    .header-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-back:hover {
+      background: var(--soft-sage);
+      transform: translateX(-4px);
+      border-color: var(--soft-sage);
+    }
+
+    .btn-back svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-primary);
+      stroke-width: 2.5;
+    }
+
+    .header-content {
+      flex-grow: 1;
+    }
+
+    .header-content h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .breadcrumb-custom {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
+
+    /* Card Container */
+    .list-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Search & Filter Section */
+    .search-filter-section {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.8);
+      transition: all 0.3s ease;
+    }
+
+    .search-wrapper input:focus {
+      outline: none;
+      border-color: var(--soft-sage);
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 0 0 3px rgba(207, 232, 229, 0.1);
+    }
+
+    .search-wrapper svg {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-tertiary);
+      stroke-width: 2;
+    }
+
+    .filter-wrapper {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .filter-dropdown {
+      padding: 0.75rem 1rem;
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 140px;
+    }
+
+    .filter-dropdown:hover {
+      border-color: var(--soft-sage);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .filter-dropdown:focus {
+      outline: none;
+      border-color: var(--soft-sage);
+      box-shadow: 0 0 0 3px rgba(207, 232, 229, 0.1);
+    }
+
+    /* Table Section */
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 2rem;
+    }
+
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0;
+    }
+
+    .table-custom thead {
+      background: rgba(207, 232, 229, 0.1);
+    }
+
+    .table-custom thead th {
+      padding: 1rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-primary);
+      border: none;
+      text-align: left;
+    }
+
+    .table-custom tbody tr {
+      border-bottom: 1px solid rgba(207, 232, 229, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .table-custom tbody tr:hover {
+      background: rgba(207, 232, 229, 0.08);
+    }
+
+    .table-custom tbody td {
+      padding: 1.25rem 1rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      border: none;
+    }
+
+    .table-custom .col-no {
+      font-weight: 600;
+      color: var(--text-tertiary);
+      width: 50px;
+    }
+
+    .table-custom .col-name {
+      font-weight: 600;
+      min-width: 180px;
+    }
+
+    .table-custom .col-mrn {
+      font-family: 'Courier New', monospace;
+      color: var(--text-secondary);
+      font-weight: 500;
+      min-width: 140px;
+    }
+
+    .table-custom .col-gender {
+      min-width: 100px;
+    }
+
+    .table-custom .col-age {
+      text-align: center;
+      min-width: 70px;
+    }
+
+    .table-custom .col-date {
+      color: var(--text-secondary);
+      min-width: 120px;
+    }
+
+    /* Status Badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      width: fit-content;
+      white-space: nowrap;
+    }
+
+    .status-badge.pending {
+      background: rgba(255, 212, 163, 0.2);
+      color: #8B5A00;
+      border: 1.5px solid rgba(255, 212, 163, 0.4);
+    }
+
+    .status-badge.completed {
+      background: rgba(168, 213, 186, 0.2);
+      color: #2D5F47;
+      border: 1.5px solid rgba(168, 213, 186, 0.4);
+    }
+
+    .status-badge svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Action Buttons */
+    .btn-action-small {
+      padding: 0.5rem 1rem;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+
+    .btn-action-small.primary {
+      background: linear-gradient(135deg, var(--soft-sage), #B8D8D4);
+      color: var(--text-primary);
+      border-color: var(--soft-sage);
+    }
+
+    .btn-action-small.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(207, 232, 229, 0.4);
+    }
+
+    .btn-action-small.secondary {
+      background: rgba(230, 230, 250, 0.3);
+      color: var(--text-primary);
+      border-color: rgba(230, 230, 250, 0.5);
+    }
+
+    .btn-action-small.secondary:hover {
+      background: rgba(230, 230, 250, 0.5);
+      border-color: var(--soft-lavender);
+    }
+
+    .btn-action-small svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Detail Button */
+    .btn-detail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: rgba(214, 230, 242, 0.3);
+      border: 2px solid rgba(214, 230, 242, 0.5);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+    }
+
+    .btn-detail:hover {
+      background: rgba(214, 230, 242, 0.6);
+      border-color: var(--soft-blue);
+      transform: scale(1.05);
+    }
+
+    .btn-detail svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+    }
+
+    /* Pagination */
+    .pagination-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(207, 232, 229, 0.2);
+    }
+
+    .pagination-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(207, 232, 229, 0.3);
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background: var(--soft-sage);
+      border-color: var(--soft-sage);
+      color: var(--text-primary);
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .pagination-btn.active {
+      background: var(--soft-sage);
+      border-color: var(--soft-sage);
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .header-content h1 {
+        font-size: 1.5rem;
+      }
+
+      .list-card {
+        padding: 1.5rem;
+      }
+
+      .search-filter-section {
+        flex-direction: column;
+      }
+
+      .search-wrapper {
+        width: 100%;
+      }
+
+      .filter-wrapper {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .filter-dropdown {
+        flex: 1;
+        min-width: 100px;
+      }
+
+      .table-custom thead th,
+      .table-custom tbody td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      .table-custom .col-name {
+        min-width: 150px;
+      }
+
+      .btn-action-small {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .header-section {
+        gap: 0.75rem;
+      }
+
+      .header-content h1 {
+        font-size: 1.25rem;
+      }
+
+      .breadcrumb-custom {
+        font-size: 0.75rem;
+      }
+
+      .list-card {
+        padding: 1rem;
+      }
+
+      .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .table-custom thead th,
+      .table-custom tbody td {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+      }
+
+      .table-custom .col-name {
+        min-width: 120px;
+      }
+
+      .table-custom .col-mrn {
+        min-width: 100px;
+      }
+
+      .btn-action-small {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.7rem;
+      }
+
+      .btn-detail {
+        width: 32px;
+        height: 32px;
+      }
+
+      .btn-detail svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body>
+  <div class="main-wrapper"><!-- Header -->
+   <div class="header-section"><button class="btn-back" id="backBtn" onclick="handleBack()">
+     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+     </svg></button>
+    <div class="header-content">
+     <h1 id="pageTitle">Pemeriksaan Fisik Pasien</h1>
+     <div class="breadcrumb-custom">
+      Dashboard Bidan / Pemeriksaan Fisik
+     </div>
+    </div>
+   </div><!-- Main Card -->
+   <div class="list-card"><!-- Search & Filter -->
+    <div class="search-filter-section">
+     <div class="search-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+       <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg><input type="text" id="searchInput" placeholder="Cari nama pasien atau nomor rekam medis..." onkeyup="filterTable()">
+     </div>
+     <div class="filter-wrapper"><label class="filter-label" id="filterLabel">Filter Status:</label> <select class="filter-dropdown" id="filterStatus" onchange="filterTable()"> <option value="">Semua</option> <option value="pending">Belum Periksa</option> <option value="completed">Sudah Periksa</option> </select>
+     </div>
+    </div><!-- Table -->
+    <div class="table-wrapper">
+     <table class="table-custom">
+      <thead>
+       <tr>
+        <th class="col-no">No</th>
+        <th class="col-name">Nama Pasien</th>
+        <th class="col-mrn">No. Rekam Medis</th>
+        <th class="col-gender">Jenis Kelamin</th>
+        <th class="col-age">Usia</th>
+        <th class="col-date">Tanggal Pemeriksaan</th>
+        <th>Status</th>
+        <th>Aksi</th>
+       </tr>
+      </thead>
+      <tbody id="tableBody"><!-- Table rows will be populated by JavaScript -->
+      </tbody>
+     </table>
+    </div><!-- Pagination -->
+    <div class="pagination-section"><button class="pagination-btn" id="prevBtn" onclick="previousPage()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor" style="width: 14px; height: 14px;">
+       <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg></button>
+     <div id="pageNumbers"></div><button class="pagination-btn" id="nextBtn" onclick="nextPage()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor" style="width: 14px; height: 14px;">
+       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg></button>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      page_title: 'Pemeriksaan Fisik Pasien',
+      back_button_text: 'Kembali ke Dashboard',
+      search_placeholder: 'Cari nama pasien atau nomor rekam medis...',
+      filter_label: 'Filter Status:',
+      exam_date_label: 'Tanggal Pemeriksaan'
+    };
+
+    // Dummy patient data - Indonesian names
+    const patientData = [
+      { id: 1, name: 'Siti Nurhaliza', mrn: 'PST-2024-001', gender: 'Perempuan', age: 32, examDate: '15 Jan 2024', status: 'pending' },
+      { id: 2, name: 'Budi Santoso', mrn: 'PST-2024-002', gender: 'Laki-laki', age: 45, examDate: '14 Jan 2024', status: 'completed' },
+      { id: 3, name: 'Dewi Lestari', mrn: 'PST-2024-003', gender: 'Perempuan', age: 28, examDate: '16 Jan 2024', status: 'pending' },
+      { id: 4, name: 'Ahmad Wijaya', mrn: 'PST-2024-004', gender: 'Laki-laki', age: 52, examDate: '13 Jan 2024', status: 'completed' },
+      { id: 5, name: 'Rahma Sugianto', mrn: 'PST-2024-005', gender: 'Perempuan', age: 35, examDate: '17 Jan 2024', status: 'pending' },
+      { id: 6, name: 'Rinto Harahap', mrn: 'PST-2024-006', gender: 'Laki-laki', age: 41, examDate: '12 Jan 2024', status: 'completed' },
+      { id: 7, name: 'Susi Hermawan', mrn: 'PST-2024-007', gender: 'Perempuan', age: 38, examDate: '18 Jan 2024', status: 'pending' },
+      { id: 8, name: 'Hendra Kusuma', mrn: 'PST-2024-008', gender: 'Laki-laki', age: 29, examDate: '15 Jan 2024', status: 'completed' },
+      { id: 9, name: 'Nita Kusuma', mrn: 'PST-2024-009', gender: 'Perempuan', age: 44, examDate: '19 Jan 2024', status: 'pending' },
+      { id: 10, name: 'Tono Marwoto', mrn: 'PST-2024-010', gender: 'Laki-laki', age: 55, examDate: '11 Jan 2024', status: 'completed' }
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 5;
+    let filteredData = [...patientData];
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
+          document.getElementById('filterLabel').textContent = config.filter_label || defaultConfig.filter_label;
+          document.getElementById('searchInput').placeholder = config.search_placeholder || defaultConfig.search_placeholder;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['page_title', config.page_title || defaultConfig.page_title],
+          ['back_button_text', config.back_button_text || defaultConfig.back_button_text],
+          ['search_placeholder', config.search_placeholder || defaultConfig.search_placeholder],
+          ['filter_label', config.filter_label || defaultConfig.filter_label],
+          ['exam_date_label', config.exam_date_label || defaultConfig.exam_date_label]
+        ])
+      });
+    }
+
+    // Filter table based on search and status
+    function filterTable() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase();
+      const filterValue = document.getElementById('filterStatus').value;
+
+      filteredData = patientData.filter(patient => {
+        const matchSearch = patient.name.toLowerCase().includes(searchValue) || patient.mrn.toLowerCase().includes(searchValue);
+        const matchFilter = filterValue === '' || patient.status === filterValue;
+        return matchSearch && matchFilter;
+      });
+
+      currentPage = 1;
+      renderTable();
+      renderPagination();
+    }
+
+    // Render table rows
+    function renderTable() {
+      const tableBody = document.getElementById('tableBody');
+      tableBody.innerHTML = '';
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = filteredData.slice(startIndex, endIndex);
+
+      pageData.forEach((patient, index) => {
+        const rowNumber = startIndex + index + 1;
+        const statusClass = patient.status === 'pending' ? 'pending' : 'completed';
+        const statusText = patient.status === 'pending' ? 'Belum Periksa' : 'Sudah Periksa';
+        const actionBtn = patient.status === 'pending' 
+          ? `<button class="btn-action-small primary" onclick="handleExam(${patient.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+              Isi Pemeriksaan
+            </button>`
+          : `<button class="btn-action-small secondary" onclick="handleViewExam(${patient.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+              Lihat Detail
+            </button>`;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="col-no">${rowNumber}</td>
+          <td class="col-name">${patient.name}</td>
+          <td class="col-mrn">${patient.mrn}</td>
+          <td class="col-gender">${patient.gender}</td>
+          <td class="col-age" style="text-align: center;">${patient.age} tahun</td>
+          <td class="col-date">${patient.examDate}</td>
+          <td>
+            <div class="status-badge ${statusClass}">
+              ${patient.status === 'pending' 
+                ? '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 24 24"><circle cx="12" cy="12" r="2" /></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>'}
+              ${statusText}
+            </div>
+          </td>
+          <td>${actionBtn}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Render pagination
+    function renderPagination() {
+      const pageNumbers = document.getElementById('pageNumbers');
+      pageNumbers.innerHTML = '';
+
+      const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+        btn.textContent = i;
+        btn.onclick = () => {
+          currentPage = i;
+          renderTable();
+        };
+        pageNumbers.appendChild(btn);
+      }
+
+      document.getElementById('prevBtn').disabled = currentPage === 1;
+      document.getElementById('nextBtn').disabled = currentPage === totalPages;
+    }
+
+    // Pagination controls
+    function previousPage() {
+      const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+        renderPagination();
+      }
+    }
+
+    function nextPage() {
+      const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+        renderPagination();
+      }
+    }
+
+    // Action handlers
+    function handleExam(patientId) {
+      const patient = patientData.find(p => p.id === patientId);
+    //   alert(`Membuka form pemeriksaan fisik`);
+      window.location.href = 'detail_pemeriksaan_fisik.html'
+    }
+
+    function handleViewExam(patientId) {
+      const patient = patientData.find(p => p.id === patientId);
+      alert(`Menampilkan hasil pemeriksaan fisik`);
+    }
+
+    function handleDetail(patientId) {
+      const patient = patientData.find(p => p.id === patientId);
+      alert(`Profil Pasien: ${patient.name}\nNo. Rekam Medis: ${patient.mrn}\nUsia: ${patient.age} tahun`);
+    }
+
+    function handleBack() {
+      alert('Kembali ke Dashboard Bidan');
+      window.location.href = 'dashboard_bidan.html'
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTable();
+      renderPagination();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d347cbc9372e77e',t:'MTc3MTk5NDAzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -6,505 +6,8 @@
   <title>SRQ Result - Patient</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/hasil_srq.css">
   <script src="/_sdk/element_sdk.js"></script>
-  <style>
-    :root {
-      --soft-sage: #CFE8E5;
-      --soft-lavender: #E6E6FA;
-      --soft-blue: #D6E6F2;
-      --soft-beige: #FDF6EC;
-      --text-primary: #2D3748;
-      --text-secondary: #718096;
-      --text-tertiary: #A0AEC0;
-      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-      --status-normal: #A8D5BA;
-      --status-warning: #FFD4A3;
-      --status-urgent: #E8B4B8;
-    }
-
-    * {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-
-    body {
-      background: linear-gradient(135deg, var(--soft-beige) 0%, var(--soft-blue) 50%, var(--soft-lavender) 100%);
-      min-height: 100%;
-      color: var(--text-primary);
-    }
-
-    .main-container {
-      min-height: 100%;
-      padding: 2rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .content-wrapper {
-      width: 100%;
-      max-width: 700px;
-    }
-
-    /* Header with Back Button */
-    .header-bar {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .btn-back {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 2px solid rgba(207, 232, 229, 0.3);
-      border-radius: 14px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      flex-shrink: 0;
-    }
-
-    .btn-back:hover {
-      background: var(--soft-sage);
-      transform: translateX(-4px);
-      border-color: var(--soft-sage);
-    }
-
-    .btn-back svg {
-      width: 20px;
-      height: 20px;
-      color: var(--text-primary);
-      stroke-width: 2.5;
-    }
-
-    .header-title {
-      flex-grow: 1;
-    }
-
-    .header-title h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 0;
-    }
-
-    /* Patient Info Card */
-    .patient-card {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 24px;
-      padding: 2.5rem;
-      box-shadow: var(--card-shadow);
-      margin-bottom: 2rem;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-    }
-
-    .patient-header {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      padding-bottom: 2rem;
-      border-bottom: 2px solid rgba(207, 232, 229, 0.2);
-    }
-
-    .patient-avatar {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--soft-sage), var(--soft-blue));
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 24px rgba(207, 232, 229, 0.3);
-      flex-shrink: 0;
-    }
-
-    .patient-avatar svg {
-      width: 40px;
-      height: 40px;
-      color: var(--text-primary);
-    }
-
-    .patient-info h2 {
-      font-size: 1.375rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 0 0 0.25rem 0;
-    }
-
-    .patient-info p {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      margin: 0;
-    }
-
-    /* Score Display */
-    .score-section {
-      background: linear-gradient(135deg, rgba(207, 232, 229, 0.1), rgba(214, 230, 242, 0.1));
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      text-align: center;
-      border: 2px solid rgba(207, 232, 229, 0.2);
-    }
-
-    .score-label {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.75rem;
-    }
-
-    .score-number {
-      font-size: 4.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--soft-sage), var(--soft-blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 0;
-      line-height: 1;
-    }
-
-    .score-max {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      margin-top: 0.5rem;
-    }
-
-    /* Progress Bar */
-    .progress-wrapper {
-      margin-top: 2.5rem;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .progress-label-text {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .progress-percentage {
-      font-size: 0.85rem;
-      font-weight: 600;
-      background: rgba(207, 232, 229, 0.3);
-      padding: 0.4rem 0.8rem;
-      border-radius: 8px;
-      color: var(--text-primary);
-    }
-
-    .progress {
-      height: 16px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    .progress-bar-custom {
-      height: 100%;
-      background: linear-gradient(90deg, var(--soft-sage), var(--soft-blue));
-      border-radius: 12px;
-      transition: width 0.6s ease;
-      box-shadow: 0 4px 12px rgba(207, 232, 229, 0.4);
-    }
-
-    /* Status Badge */
-    .status-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .status-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1rem 1.5rem;
-      border-radius: 16px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      flex: 1;
-    }
-
-    .status-badge.normal {
-      background: rgba(168, 213, 186, 0.15);
-      color: #2D5F47;
-      border: 2px solid rgba(168, 213, 186, 0.5);
-    }
-
-    .status-badge.warning {
-      background: rgba(255, 212, 163, 0.15);
-      color: #8B5A00;
-      border: 2px solid rgba(255, 212, 163, 0.5);
-    }
-
-    .status-badge.urgent {
-      background: rgba(232, 180, 184, 0.15);
-      color: #8B3A3F;
-      border: 2px solid rgba(232, 180, 184, 0.5);
-    }
-
-    .status-icon {
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .status-icon svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Interpretation Card */
-    .interpretation-card {
-      background: linear-gradient(135deg, rgba(230, 230, 250, 0.5), rgba(214, 230, 242, 0.5));
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      border: 2px solid rgba(230, 230, 250, 0.4);
-    }
-
-    .interpretation-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .interpretation-title svg {
-      width: 22px;
-      height: 22px;
-      color: var(--soft-sage);
-    }
-
-    .interpretation-text {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      margin: 0;
-    }
-
-    /* Recommendation Card */
-    .recommendation-card {
-      background: linear-gradient(135deg, rgba(207, 232, 229, 0.1), rgba(230, 230, 250, 0.1));
-      border-radius: 20px;
-      padding: 2rem;
-      border: 2px solid rgba(207, 232, 229, 0.2);
-      margin-bottom: 2rem;
-    }
-
-    .recommendation-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .recommendation-title svg {
-      width: 22px;
-      height: 22px;
-      color: var(--soft-blue);
-    }
-
-    .recommendation-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .recommendation-item {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 0.75rem;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .recommendation-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .recommendation-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--soft-sage);
-      border-radius: 50%;
-      margin-top: 0.5rem;
-      flex-shrink: 0;
-    }
-
-    /* Bottom Action */
-    .action-section {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .btn-action {
-      flex: 1;
-      padding: 1rem;
-      border-radius: 16px;
-      border: 2px solid transparent;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-align: center;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-    }
-
-    .btn-action.primary {
-      background: linear-gradient(135deg, var(--soft-sage), #B8D8D4);
-      color: var(--text-primary);
-      box-shadow: 0 8px 24px rgba(207, 232, 229, 0.4);
-    }
-
-    .btn-action.primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(207, 232, 229, 0.6);
-    }
-
-    .btn-action.secondary {
-      background: rgba(255, 255, 255, 0.9);
-      color: var(--text-primary);
-      border: 2px solid rgba(207, 232, 229, 0.3);
-    }
-
-    .btn-action.secondary:hover {
-      background: rgba(207, 232, 229, 0.1);
-      border-color: var(--soft-sage);
-    }
-
-    .btn-action svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    /* Chart Grid */
-    .chart-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .chart-item {
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 16px;
-      padding: 1.5rem;
-      text-align: center;
-      border: 2px solid rgba(207, 232, 229, 0.2);
-    }
-
-    .chart-item-label {
-      font-size: 0.8rem;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-bottom: 0.75rem;
-      font-weight: 600;
-    }
-
-    .chart-item-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--soft-sage), var(--soft-blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Responsive */
-    @media (max-width: 576px) {
-      .main-container {
-        padding: 1.5rem 0.75rem;
-      }
-
-      .patient-card {
-        padding: 1.5rem;
-      }
-
-      .patient-header {
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1.5rem;
-      }
-
-      .patient-avatar {
-        width: 70px;
-        height: 70px;
-      }
-
-      .patient-info h2 {
-        font-size: 1.2rem;
-      }
-
-      .score-number {
-        font-size: 3.5rem;
-      }
-
-      .score-section {
-        padding: 1.5rem;
-      }
-
-      .interpretation-card,
-      .recommendation-card {
-        padding: 1.5rem;
-      }
-
-      .chart-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-      }
-
-      .chart-item {
-        padding: 1rem;
-      }
-
-      .chart-item-value {
-        font-size: 1.4rem;
-      }
-
-      .action-section {
-        flex-direction: column;
-      }
-
-      .btn-action {
-        width: 100%;
-      }
-    }
-  </style>
   <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <style>body { box-sizing: border-box; }</style>
@@ -534,15 +37,13 @@
       <div class="score-label">
        Total Skor SRQ
       </div>
-      <h3 class="score-number" id="scoreNumber">6</h3>
-      <div class="score-max">
-       dari 10 poin
-      </div>
+      <h3 class="score-number" id="scoreNumber">26</h3>
+      <div class="score-max" id="scoreMax"></div>
       <div class="progress-wrapper">
-       <div class="progress-label"><span class="progress-label-text">Tingkat Gejala</span> <span class="progress-percentage" id="scorePercentage">60%</span>
+       <div class="progress-label"><span class="progress-label-text">Tingkat Gejala</span> <span class="progress-percentage" id="scorePercentage">90%</span>
        </div>
        <div class="progress">
-        <div class="progress-bar-custom" id="progressBar" style="width: 60%;"></div>
+        <div class="progress-bar-custom" id="progressBar" style="width: 90%;"></div>
        </div>
       </div>
      </div><!-- Status Badge -->
@@ -605,9 +106,7 @@
      </div><!-- Action Buttons -->
      <div class="action-section"><button class="btn-action secondary" id="backButton" onclick="handleBack()">
        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-       </svg><span id="backButtonText">Kembali ke Dashboard</span> </button> <button class="btn-action primary" onclick="handleDownload()">
-       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-       </svg> Unduh Hasil </button>
+       </svg><span id="backButtonText">Kembali ke Dashboard</span> </button>
      </div>
     </div>
    </div>
@@ -632,7 +131,7 @@
     const patientData = {
       id: 'PST-2024-001',
       name: 'Budi Santoso',
-      score: 6,
+      score: 20,
       status: 'warning', // 'normal', 'warning', 'urgent'
       physicalSymptoms: 40,
       emotionalSymptoms: 70,
@@ -640,7 +139,7 @@
     };
 
     // Calculate percentage
-    function calculatePercentage(score, max = 10) {
+    function calculatePercentage(score, max = 29) {
       return Math.round((score / max) * 100);
     }
 
@@ -769,6 +268,7 @@
       const percentage = calculatePercentage(patientData.score);
 
       // Update score display
+      document.getElementById('scoreMax').textContent = 'dari 29 poin';
       document.getElementById('scoreNumber').textContent = patientData.score;
       document.getElementById('scorePercentage').textContent = percentage + '%';
       document.getElementById('progressBar').style.width = percentage + '%';
@@ -791,53 +291,8 @@
     function handleBack() {
       alert('Kembali ke Halaman Test SRQ');
         setTimeout(() => {
-          window.location.href = 'dashboard_bidan.html';
+          window.location.href = 'hasil_srq_test.html';
         }, 500);
-    }
-
-    // Handle download
-    function handleDownload() {
-      // Create simple PDF-like download simulation
-      const content = `
-LAPORAN HASIL SKRINING SRQ
-==========================
-
-Nama Pasien: ${patientData.name}
-ID Pasien: ${patientData.id}
-Tanggal: ${new Date().toLocaleDateString('id-ID')}
-
-HASIL SKRINING
-Total Skor: ${patientData.score} / 10
-Persentase: ${calculatePercentage(patientData.score)}%
-
-STATUS: ${getStatusInfo(patientData.score).label}
-
-GEJALA
-- Gejala Fisik: ${patientData.physicalSymptoms}%
-- Gejala Emosional: ${patientData.emotionalSymptoms}%
-- Fungsi Sosial: ${patientData.socialFunction}%
-
-INTERPRETASI
-${getStatusInfo(patientData.score).interpretation}
-
-REKOMENDASI
-1. Lakukan konsultasi dengan psikolog atau psikiater
-2. Terapkan teknik manajemen stres
-3. Jaga pola tidur yang teratur
-4. Komunikasikan perasaan kepada orang terpercaya
-
-Generated on ${new Date().toLocaleString('id-ID')}
-      `;
-
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Hasil_SRQ_${patientData.name}_${new Date().getTime()}.txt`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
     }
 
     // Initialize on page load

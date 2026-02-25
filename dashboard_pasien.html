@@ -516,15 +516,9 @@
       <li class="menu-item"><a href="hasil_srq.html" class="menu-link" onclick="activeMenu(event, 'hasil-srq')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
          </svg></span> <span>Hasil SRQ</span> </a></li>
-      <li class="menu-item"><a href="hasil_lab.html" class="menu-link" onclick="activeMenu(event, 'hasil-lab')"> <span class="menu-icon">
-         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1" /> <path d="M12 1v6m0 6v6" /> <path d="M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24" /> <path d="M1 12h6m6 0h6" /> <path d="M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" />
-         </svg></span> <span>Hasil Lab</span> </a></li>
       <li class="menu-item"><a href="hasil_pemeriksaan.html" class="menu-link" onclick="activeMenu(event, 'hasil-akhir')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4" /> <circle cx="12" cy="12" r="10" />
          </svg></span> <span>Hasil Akhir Pemeriksaan</span> </a></li>
-      <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'rujukan')"> <span class="menu-icon">
-         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /> <polyline points="17 8 11 14 5 8"></polyline>
-         </svg></span> <span>Rujukan</span> </a></li>
       <li class="menu-item"><a href="#" class="menu-link" onclick="activeMenu(event, 'sertifikat')"> <span class="menu-icon">
          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /> <path d="M8 10h8" /> <path d="M8 14h6" />
          </svg></span> <span>Sertifikat Layak Nikah</span> </a></li>
@@ -602,27 +596,7 @@
        </div>
        <p class="progress-description">Jadwalkan test psikologi dengan tenaga medis profesional kami</p><a href="test_srq.html" class="progress-action">Jadwalkan Sekarang →</a>
       </div><!-- Hasil Lab Card -->
-      <div class="progress-card">
-       <div class="progress-card-header">
-        <div class="progress-icon progress-card-icon-4">
-         <svg viewbox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="1" fill="#C9A85C" opacity="0.8" /> <path d="M12 1v6m0 6v6" stroke="#C9A85C" stroke-width="2" fill="none" opacity="0.8" /> <path d="M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24" stroke="#C9A85C" stroke-width="2" fill="none" opacity="0.8" />
-         </svg>
-        </div>
-        <div>
-         <div class="progress-card-title">
-          Hasil Lab
-         </div><span class="progress-card-status status-pending">⏸ Proses</span>
-        </div>
-       </div>
-       <div class="progress-bar-wrapper">
-        <div class="progress-bar-label"><span>Progress</span> <span>60%</span>
-        </div>
-        <div class="progress-bar">
-         <div class="progress-bar-fill" style="width: 60%; background: linear-gradient(90deg, #E8A949 0%, #F0B95A 100%)"></div>
-        </div>
-       </div>
-       <p class="progress-description">Hasil lab sedang diproses. Estimasi selesai dalam 2-3 hari kerja</p><a href="hasil_lab.html" class="progress-action">Status Laboratorium →</a>
-      </div><!-- Hasil Akhir Card -->
+     <!-- Hasil Akhir Card -->
       <div class="progress-card">
        <div class="progress-card-header">
         <div class="progress-icon progress-card-icon-1">
@@ -663,7 +637,7 @@
          <div class="progress-bar-fill" style="width: 0%"></div>
         </div>
        </div>
-       <p class="progress-description">Sertifikat akan diterbitkan setelah semua pemeriksaan lengkap</p><a href="#" class="progress-action" onclick="handleMenuClick(event)">Download Sertifikat →</a>
+       <p class="progress-description">Sertifikat akan diterbitkan setelah semua pemeriksaan lengkap</p><a href="https://sertifikat-dinkes.jakarta.go.id/check" class="progress-action">Download Sertifikat →</a>
       </div>
      </div>
     </main>
@@ -694,7 +668,6 @@
 
     // Active Menu
     function activeMenu(e, menuName) {
-      e.preventDefault();
       
       // Remove active class from all menu links
       document.querySelectorAll('.menu-link').forEach(link => {
@@ -708,12 +681,6 @@
       if (window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.remove('show');
       }
-    }
-
-    // Handle Menu Click
-    function handleMenuClick(e) {
-      e.preventDefault();
-      alert('Fitur ini akan membawa Anda ke halaman terkait');
     }
 
     // Logout Handler
