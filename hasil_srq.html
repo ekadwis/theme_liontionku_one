@@ -52,7 +52,7 @@
        <div class="status-icon">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-       </div><span id="statusLabel">Perlu Konsultasi</span>
+       </div><span id="statusLabel"></span>
       </div>
      </div><!-- Interpretation -->
      <div class="interpretation-card">
@@ -61,49 +61,8 @@
        </svg> Interpretasi Hasil
       </div>
       <p class="interpretation-text" id="interpretationText">Hasil skrining menunjukkan Anda mengalami gejala gangguan kesehatan mental yang cukup signifikan. Beberapa gejala seperti kecemasan, kesulitan tidur, dan perasaan tertekan terlihat menonjol. Sangat disarankan untuk melakukan konsultasi dengan profesional kesehatan mental untuk evaluasi lebih lanjut dan mendapatkan penanganan yang sesuai.</p>
-     </div><!-- Recommendations -->
-     <div class="recommendation-card">
-      <div class="recommendation-title">
-       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-       </svg><span id="consultationNote">Rekomendasi Selanjutnya</span>
-      </div>
-      <ul class="recommendation-list">
-       <li class="recommendation-item">
-        <div class="recommendation-dot"></div><span>Lakukan konsultasi dengan psikolog atau psikiater dalam waktu dekat</span></li>
-       <li class="recommendation-item">
-        <div class="recommendation-dot"></div><span>Terapkan teknik manajemen stres seperti meditasi atau mindfulness</span></li>
-       <li class="recommendation-item">
-        <div class="recommendation-dot"></div><span>Jaga pola tidur yang teratur dan lakukan aktivitas fisik ringan</span></li>
-       <li class="recommendation-item">
-        <div class="recommendation-dot"></div><span>Komunikasikan perasaan Anda kepada keluarga atau orang terpercaya</span></li>
-      </ul>
-     </div><!-- Statistics Grid -->
-     <div class="chart-grid">
-      <div class="chart-item">
-       <div class="chart-item-label">
-        Gejala Fisik
-       </div>
-       <div class="chart-item-value">
-        40%
-       </div>
-      </div>
-      <div class="chart-item">
-       <div class="chart-item-label">
-        Emosional
-       </div>
-       <div class="chart-item-value">
-        70%
-       </div>
-      </div>
-      <div class="chart-item">
-       <div class="chart-item-label">
-        Fungsi Sosial
-       </div>
-       <div class="chart-item-value">
-        50%
-       </div>
-      </div>
-     </div><!-- Action Buttons -->
+     </div>
+     <!-- Action Buttons -->
      <div class="action-section"><button class="btn-action secondary" id="backButton" onclick="handleBack()">
        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
        </svg><span id="backButtonText">Kembali ke Dashboard</span> </button>
@@ -113,190 +72,95 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Default configuration
-    const defaultConfig = {
-      page_title: 'Hasil Skrining SRQ',
-      back_button_text: 'Kembali ke Dashboard',
-      patient_name: 'Budi Santoso',
-      status_label: 'Perlu Konsultasi',
-      consultation_note: 'Rekomendasi Selanjutnya',
-      background_color: '#FDF6EC',
-      surface_color: '#FFFFFF',
-      text_color: '#2D3748',
-      primary_action_color: '#CFE8E5',
-      secondary_action_color: '#E6E6FA'
-    };
-
-    // Dummy patient data with different scenarios
-    const patientData = {
-      id: 'PST-2024-001',
-      name: 'Budi Santoso',
-      score: 20,
-      status: 'warning', // 'normal', 'warning', 'urgent'
-      physicalSymptoms: 40,
-      emotionalSymptoms: 70,
-      socialFunction: 50
-    };
-
-    // Calculate percentage
+    const API_URL = "https://script.google.com/macros/s/AKfycbyS6y63OBsRpR81JhII3N_GxkkTIpgCcs_sCDHXjnx5onzwNOSyIKNbYFooXnLGkCHB/exec";
+  
     function calculatePercentage(score, max = 29) {
       return Math.round((score / max) * 100);
     }
-
-    // Get status info based on score
+  
     function getStatusInfo(score) {
-      if (score <= 3) {
+      score = Number(score);
+  
+      if (score <= 5) {
         return {
-          status: 'normal',
-          label: 'Status: Baik',
           class: 'normal',
-          interpretation: 'Hasil skrining menunjukkan kondisi kesehatan mental Anda dalam kategori baik. Tidak ada tanda-tanda gangguan kesehatan mental yang signifikan. Terus jaga pola hidup sehat dan kelola stres dengan baik.'
+          label: 'Baik',
+          interpretation:
+            'Hasil skrining menunjukkan kondisi kesehatan mental Anda dalam kategori baik. Tetap jaga pola hidup sehat dan kelola stres dengan baik.'
         };
-      } else if (score <= 6) {
+      } else if (score <= 9) {
         return {
-          status: 'warning',
-          label: 'Perlu Konsultasi',
           class: 'warning',
-          interpretation: 'Hasil skrining menunjukkan Anda mengalami gejala gangguan kesehatan mental yang cukup signifikan. Beberapa gejala seperti kecemasan, kesulitan tidur, dan perasaan tertekan terlihat menonjol. Sangat disarankan untuk melakukan konsultasi dengan profesional kesehatan mental.'
+          label: 'Perlu Perhatian',
+          interpretation:
+            'Terdapat beberapa gejala yang perlu diperhatikan. Disarankan untuk menjaga keseimbangan aktivitas, istirahat, dan dukungan sosial.'
         };
       } else {
         return {
-          status: 'urgent',
-          label: 'Perlu Perhatian Urgent',
-          class: 'urgent',
-          interpretation: 'Hasil skrining menunjukkan Anda mengalami gejala gangguan kesehatan mental yang sangat serius. Diperlukan penanganan profesional segera. Silakan hubungi layanan kesehatan mental atau rumah sakit untuk mendapatkan evaluasi dan penanganan yang tepat.'
+          class: 'warning',
+          label: 'Perlu Evaluasi Lanjutan',
+          interpretation:
+            'Ditemukan cukup banyak gejala yang memerlukan evaluasi lebih lanjut oleh tenaga kesehatan untuk memastikan kondisi secara menyeluruh.'
         };
       }
     }
-
-    // Initialize Element SDK
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange: async (config) => {
-          // Update page title
-          document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
-
-          // Update patient name
-          document.getElementById('patientName').textContent = config.patient_name || defaultConfig.patient_name;
-
-          // Update back button text
-          document.getElementById('backButtonText').textContent = config.back_button_text || defaultConfig.back_button_text;
-
-          // Update status label
-          document.getElementById('statusLabel').textContent = config.status_label || defaultConfig.status_label;
-
-          // Update consultation note
-          document.getElementById('consultationNote').textContent = config.consultation_note || defaultConfig.consultation_note;
-
-          // Apply colors
-          const bgColor = config.background_color || defaultConfig.background_color;
-          const surfaceColor = config.surface_color || defaultConfig.surface_color;
-          const textColor = config.text_color || defaultConfig.text_color;
-          const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
-          const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
-
-          document.body.style.background = `linear-gradient(135deg, ${bgColor} 0%, #D6E6F2 50%, ${secondaryColor} 100%)`;
-
-          document.querySelectorAll('.patient-card, .chart-item').forEach(el => {
-            el.style.background = surfaceColor ? `rgba(255, 255, 255, 0.95)` : '';
-          });
-
-          document.querySelectorAll('.page-title, .interpretation-title').forEach(el => {
-            el.style.color = textColor;
-          });
-
-          document.querySelectorAll('.btn-action.primary').forEach(btn => {
-            btn.style.background = `linear-gradient(135deg, ${primaryColor}, #B8D8D4)`;
-          });
-        },
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            {
-              get: () => config.background_color || defaultConfig.background_color,
-              set: (value) => {
-                config.background_color = value;
-                window.elementSdk.setConfig({ background_color: value });
-              }
-            },
-            {
-              get: () => config.surface_color || defaultConfig.surface_color,
-              set: (value) => {
-                config.surface_color = value;
-                window.elementSdk.setConfig({ surface_color: value });
-              }
-            },
-            {
-              get: () => config.text_color || defaultConfig.text_color,
-              set: (value) => {
-                config.text_color = value;
-                window.elementSdk.setConfig({ text_color: value });
-              }
-            },
-            {
-              get: () => config.primary_action_color || defaultConfig.primary_action_color,
-              set: (value) => {
-                config.primary_action_color = value;
-                window.elementSdk.setConfig({ primary_action_color: value });
-              }
-            },
-            {
-              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
-              set: (value) => {
-                config.secondary_action_color = value;
-                window.elementSdk.setConfig({ secondary_action_color: value });
-              }
-            }
-          ],
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ['page_title', config.page_title || defaultConfig.page_title],
-          ['back_button_text', config.back_button_text || defaultConfig.back_button_text],
-          ['patient_name', config.patient_name || defaultConfig.patient_name],
-          ['status_label', config.status_label || defaultConfig.status_label],
-          ['consultation_note', config.consultation_note || defaultConfig.consultation_note]
-        ])
+  
+    function loadData() {
+      const params = new URLSearchParams(window.location.search);
+      const id_pasien = params.get("id_pasien");
+  
+      if (!id_pasien) {
+        alert("ID Pasien tidak ditemukan");
+        return;
+      }
+  
+      fetch(API_URL, {
+        method: "POST",
+        body: new URLSearchParams({
+          action: "get-detail-srq",
+          id_pasien: id_pasien
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+  
+        if (!data.success) {
+          alert(data.message);
+          return;
+        }
+  
+        const nama = data.nama_pasien;
+        const skor = Number(data.skor);
+  
+        const statusInfo = getStatusInfo(skor);
+        const percentage = calculatePercentage(skor);
+  
+        // Isi data ke halaman
+        document.getElementById("patientName").textContent = nama;
+        document.querySelector(".patient-info p").textContent = "ID Pasien: " + data.id_pasien;
+  
+        document.getElementById("scoreNumber").textContent = skor;
+        document.getElementById("scoreMax").textContent = "dari 29 poin";
+        document.getElementById("scorePercentage").textContent = percentage + "%";
+        document.getElementById("progressBar").style.width = percentage + "%";
+  
+        const statusBadge = document.getElementById("statusBadge");
+        statusBadge.className = `status-badge ${statusInfo.class}`;
+        document.getElementById("statusLabel").textContent = statusInfo.label;
+  
+        document.getElementById("interpretationText").textContent = statusInfo.interpretation;
+  
+      })
+      .catch(err => {
+        alert("Gagal terhubung ke server");
       });
     }
-
-    // Initialize page with data
-    function initializePage() {
-      const statusInfo = getStatusInfo(patientData.score);
-      const percentage = calculatePercentage(patientData.score);
-
-      // Update score display
-      document.getElementById('scoreMax').textContent = 'dari 29 poin';
-      document.getElementById('scoreNumber').textContent = patientData.score;
-      document.getElementById('scorePercentage').textContent = percentage + '%';
-      document.getElementById('progressBar').style.width = percentage + '%';
-
-      // Update status
-      const statusBadge = document.getElementById('statusBadge');
-      statusBadge.className = `status-badge ${statusInfo.class}`;
-      document.getElementById('statusLabel').textContent = statusInfo.label;
-
-      // Update interpretation
-      document.getElementById('interpretationText').textContent = statusInfo.interpretation;
-
-      // Update statistics
-      document.querySelectorAll('.chart-item')[0].querySelector('.chart-item-value').textContent = patientData.physicalSymptoms + '%';
-      document.querySelectorAll('.chart-item')[1].querySelector('.chart-item-value').textContent = patientData.emotionalSymptoms + '%';
-      document.querySelectorAll('.chart-item')[2].querySelector('.chart-item-value').textContent = patientData.socialFunction + '%';
-    }
-
-    // Handle back button
+  
     function handleBack() {
-      alert('Kembali ke Halaman Test SRQ');
-        setTimeout(() => {
-          window.location.href = 'hasil_srq_test.html';
-        }, 500);
+      window.location.href = "hasil_srq_test.html";
     }
-
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', initializePage);
+  
+    document.addEventListener("DOMContentLoaded", loadData);
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d0ac2fbb5c9afeb',t:'MTc3MTU1NjUxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

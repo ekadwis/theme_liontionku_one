@@ -24,7 +24,7 @@
         --text-tertiary: #a0aec0;
         --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         --card-shadow-hover: 0 12px 32px rgba(207, 232, 229, 0.3);
-        --primary-color: #4A9D8E;
+        --primary-color: #4a9d8e;
       }
 
       * {
@@ -87,24 +87,32 @@
         transform: translateX(-4px);
         border-color: var(--soft-sage);
       }
-      
-      .btn-logout {
-      background: linear-gradient(135deg, var(--primary-color) 0%, #5AADA0 100%);
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
 
-    .btn-logout:hover {
-      background: linear-gradient(135deg, #3D8A7D 0%, var(--primary-color) 100%);
-      color: white;
-      transform: translateY(-2px);
-    }
+      .btn-logout {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          #5aada0 100%
+        );
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-logout:hover {
+        background: linear-gradient(
+          135deg,
+          #3d8a7d 0%,
+          var(--primary-color) 100%
+        );
+        color: white;
+        transform: translateY(-2px);
+      }
 
       .btn-back svg {
         width: 20px;
@@ -133,7 +141,6 @@
         box-shadow: var(--card-shadow);
         margin-bottom: 2.5rem;
         backdrop-filter: blur(10px);
-        
       }
 
       .welcome-header {
@@ -325,9 +332,9 @@
       <div class="content-wrapper">
         <!-- Welcome Section -->
         <div class="welcome-section">
-          <div class="welcome-header" style="justify-content: space-between;">
+          <div class="welcome-header" style="justify-content: space-between">
             <!-- Kiri: Avatar + Info -->
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem">
               <div class="midwife-avatar">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -342,20 +349,21 @@
                   />
                 </svg>
               </div>
-          
+
               <div class="welcome-info">
                 <h1 id="welcomeTitle">Selamat Datang, Bidan Siti</h1>
-                <p id="welcomeMessage">Dashboard Manajemen Kesehatan Ibu Hamil</p>
+                <p id="welcomeMessage">
+                  Dashboard Manajemen Kesehatan Ibu Hamil
+                </p>
                 <div class="welcome-subtitle">
                   📊 Kelola data pasien dengan mudah
                 </div>
               </div>
             </div>
-          
-            <!-- 👉 Kanan: Logout -->
-            <a href="login_bidan.html" class="btn-logout" id="logoutBtn">
+
+            <button class="btn-logout" onclick="logout()">
               Logout
-            </a>
+            </button>
           </div>
         </div>
         <!-- Menu Grid -->
@@ -430,13 +438,15 @@
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewbox="0 0 24 24"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
+                <!-- Icon heartbeat -->
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  stroke-width="1.8"
+                  d="M3 12h4l2-3 4 6 2-3h6"
                 />
               </svg>
             </div>
@@ -456,6 +466,40 @@
               />
             </svg>
           </div>
+          <!-- Menu 4: Hasil Lab -->
+<div class="menu-card" onclick="handleMenuClick('lab')">
+  <div class="menu-icon">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <!-- Icon tabung lab -->
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.8"
+        d="M9 2v6l-4 7a4 4 0 003.5 6h7a4 4 0 003.5-6l-4-7V2"
+      />
+    </svg>
+  </div>
+  <h3 id="menu3Title">Hasil Lab Pasien</h3>
+  <p>Kelola dan unduh hasil pemeriksaan laboratorium pasien</p>
+  <svg
+    class="menu-arrow"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M9 5l7 7-7 7"
+    />
+  </svg>
+</div>
         </div>
       </div>
     </div>
@@ -530,6 +574,22 @@
         });
       }
 
+      const session = JSON.parse(localStorage.getItem('bidanSession'));
+
+      if (!session) {
+        // Belum login
+        window.location.href = 'login_bidan.html';
+      }
+
+      // Contoh tampil nama
+      document.getElementById('welcomeTitle').innerText = `Selamat Datang, Bidan ${session.nama}`;
+
+      // handleLogout
+      function logout() {
+        localStorage.removeItem('bidanSession');
+        window.location.href = 'login_bidan.html';
+      }
+
       // Handle menu clicks
       function handleMenuClick(menuType) {
         const messages = {
@@ -538,6 +598,7 @@
           fisik: 'Membuka halaman Pemeriksaan Fisik Pasien...',
           referral: 'Membuka halaman Rujukan...',
           certificate: 'Membuka halaman Sertifikat Layak Nikah...',
+          lab: 'Membuka halaman Hasil Lab...',
         };
 
         // Show simple notification
@@ -565,6 +626,7 @@
           fisik: 'pemeriksaan_fisik_pasien.html',
           referral: 'rujukan_pasien.html',
           certificate: 'https://sertifikat-dinkes.jakarta.go.id/check',
+          lab: 'hasil_lab_pasien.html',
         };
 
         // ⏱️ Redirect setelah 1.5 detik (jika ada rutenya)
