@@ -13,7 +13,7 @@
 
 html,
 body {
-  height: 100%;
+  height: 100vh;
   margin: 0;
 }
 
@@ -26,12 +26,15 @@ body {
     var(--soft-sage) 100%
   );
   color: var(--text-dark);
-  min-height: 100%;
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .main-wrapper {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }

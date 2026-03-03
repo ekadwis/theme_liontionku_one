@@ -361,9 +361,7 @@
               </div>
             </div>
 
-            <button class="btn-logout" onclick="logout()">
-              Logout
-            </button>
+            <button class="btn-logout" onclick="logout()">Logout</button>
           </div>
         </div>
         <!-- Menu Grid -->
@@ -467,39 +465,73 @@
             </svg>
           </div>
           <!-- Menu 4: Hasil Lab -->
-<div class="menu-card" onclick="handleMenuClick('lab')">
-  <div class="menu-icon">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <!-- Icon tabung lab -->
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.8"
-        d="M9 2v6l-4 7a4 4 0 003.5 6h7a4 4 0 003.5-6l-4-7V2"
-      />
-    </svg>
-  </div>
-  <h3 id="menu3Title">Hasil Lab Pasien</h3>
-  <p>Kelola dan unduh hasil pemeriksaan laboratorium pasien</p>
-  <svg
-    class="menu-arrow"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M9 5l7 7-7 7"
-    />
-  </svg>
-</div>
+          <div class="menu-card" onclick="handleMenuClick('lab')">
+            <div class="menu-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <!-- Icon tabung lab -->
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                  d="M9 2v6l-4 7a4 4 0 003.5 6h7a4 4 0 003.5-6l-4-7V2"
+                />
+              </svg>
+            </div>
+            <h3 id="menu3Title">Hasil Lab Pasien</h3>
+            <p>Kelola dan unduh hasil pemeriksaan laboratorium pasien</p>
+            <svg
+              class="menu-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
+          <!-- Menu: Data Pasien -->
+          <div class="menu-card" onclick="handleMenuClick('data_pasien')">
+            <div class="menu-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <!-- Icon user list -->
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                  d="M17 20h5v-1a4 4 0 00-4-4h-1M9 20H4v-1a4 4 0 014-4h1m0-4a4 4 0 100-8 4 4 0 000 8zm8 4a4 4 0 00-3-3.87"
+                />
+              </svg>
+            </div>
+            <h3 id="menuPasienTitle">Data Pasien</h3>
+            <p>Kelola dan lihat daftar data pasien</p>
+            <svg
+              class="menu-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -582,7 +614,9 @@
       }
 
       // Contoh tampil nama
-      document.getElementById('welcomeTitle').innerText = `Selamat Datang, Bidan ${session.nama}`;
+      document.getElementById(
+        'welcomeTitle'
+      ).innerText = `Selamat Datang, Bidan ${session.nama}`;
 
       // handleLogout
       function logout() {
@@ -596,7 +630,7 @@
           posttest: 'Membuka halaman Hasil Post Test Pasien...',
           srq: 'Membuka halaman Hasil SRQ Pasien...',
           fisik: 'Membuka halaman Pemeriksaan Fisik Pasien...',
-          referral: 'Membuka halaman Rujukan...',
+          data_pasien: 'Membuka halaman Data Pasien...',
           certificate: 'Membuka halaman Sertifikat Layak Nikah...',
           lab: 'Membuka halaman Hasil Lab...',
         };
@@ -624,7 +658,7 @@
           posttest: 'hasil_post_test.html',
           srq: 'hasil_srq_test.html',
           fisik: 'pemeriksaan_fisik_pasien.html',
-          referral: 'rujukan_pasien.html',
+          data_pasien: 'data_pasien.html',
           certificate: 'https://sertifikat-dinkes.jakarta.go.id/check',
           lab: 'hasil_lab_pasien.html',
         };
