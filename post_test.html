@@ -505,7 +505,10 @@
               <button type="reset" class="btn-reset" onclick="resetForm()">
                 Batal
               </button>
-              <button type="submit" class="btn-submit">Submit Post Test</button>
+              <button type="submit" class="btn-submit" id="submitBtn">
+                <span id="submitText">Submit Post Test</span>
+                <span id="submitSpinner" class="spinner-border spinner-border-sm ms-2 d-none"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -514,7 +517,7 @@
       <footer>
         <div class="container">
           <p class="footer-text">
-            © 2024 Sistem Pemeriksaan Kesehatan Pranikah. Hak Cipta Dilindungi.
+            © 2026 Sistem Pemeriksaan Kesehatan Pranikah. Hak Cipta Dilindungi.
           </p>
         </div>
       </footer>
@@ -543,8 +546,11 @@
         e.preventDefault();
       
         const formData = new FormData(this);
+        const submitBtn = document.getElementById("submitBtn");
+        const submitText = document.getElementById("submitText");
+        const spinner = document.getElementById("submitSpinner");
       
-        // Validasi semua soal terjawab
+        // Validasi semua soal
         for (let i = 1; i <= 10; i++) {
           if (!formData.get("question" + i)) {
             alert("Semua pertanyaan harus dijawab!");
@@ -552,7 +558,11 @@
           }
         }
       
-        // Siapkan data untuk dikirim ke GAS
+        // Disable tombol + tampilkan loading
+        submitBtn.disabled = true;
+        submitText.textContent = "Mengirim...";
+        spinner.classList.remove("d-none");
+      
         const payload = new URLSearchParams({
           action: "submit_post_test",
           id_pasien: session.id_pasien,
@@ -572,25 +582,31 @@
       
           if (result.success) {
       
-            // Tampilkan alert sukses
             document.getElementById("successAlert").classList.add("show");
       
-            // Disable form
             const inputs = this.querySelectorAll("input, button");
             inputs.forEach(input => input.disabled = true);
       
-            // Optional redirect
             setTimeout(() => {
               window.location.href = "dashboard_pasien.html";
             }, 2000);
       
           } else {
             alert(result.message || "Gagal submit");
+      
+            // kalau gagal aktifkan lagi tombol
+            submitBtn.disabled = false;
+            submitText.textContent = "Submit Post Test";
+            spinner.classList.add("d-none");
           }
       
         } catch (error) {
           console.error(error);
           alert("Gagal terhubung ke server");
+      
+          submitBtn.disabled = false;
+          submitText.textContent = "Submit Post Test";
+          spinner.classList.add("d-none");
         }
       });
       // Reset Form

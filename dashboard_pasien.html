@@ -237,30 +237,19 @@
                 </div>
                 <div>
                   <div class="progress-card-title">Baca E-book</div>
-                  <span id="ebookStatus" class="progress-card-status"
-                    >⏳ Menunggu</span
-                  >
-                </div>
-              </div>
-              <div class="progress-bar-wrapper">
-                <div class="progress-bar-label">
-                  <span>Progress</span> <span id="ebookPercentText">0%</span>
-                </div>
-                <div class="progress-bar">
-                  <div
-                    class="progress-bar-fill"
-                    id="ebookProgressBar"
-                    style="width: 0%"
-                  ></div>
+                  <span id="ebookStatus" class="progress-card-status status-complete">
+                    ✓ Selesai
+                  </span>
                 </div>
               </div>
               <p class="progress-description">
-                Anda telah menyelesaikan membaca semua materi edukasi kesehatan
-                pranikah
+                Dimohon untuk membaca E-book berikut sebagai bagian dari edukasi
+  kesehatan pranikah. Pembacaan materi ini bersifat wajib sebelum
+  melanjutkan ke tahap pemeriksaan berikutnya.
               </p>
-              <a href="baca_ebook.html" id="ebookBtn" class="progress-action"
-                >Lihat Detail →</a
-              >
+              <a href="https://heyzine.com/flip-book/00cf1fe663.html" target="_blank" id="ebookBtn" class="progress-action">
+                Buka E-book →
+              </a>
             </div>
             <!-- Post Test Card -->
             <div class="progress-card">
@@ -520,7 +509,7 @@
       }
 
       function updateProgressUI(data) {
-        const ebook = data.ebook || 0;
+        const ebook = 100;
         const postTest = data.post_test || 0;
         const srq = data.srq || 0;
         const hasil = data.hasil_pemeriksaan || 0;
@@ -528,9 +517,6 @@
         const linkFile = data.link_file || '';
       
         // ===== UPDATE PERCENT =====
-        document.getElementById('ebookPercentText').textContent = ebook + '%';
-        document.getElementById('ebookProgressBar').style.width = ebook + '%';
-      
         document.getElementById('postTestPercentText').textContent = postTest + '%';
         document.getElementById('postTestProgressBar').style.width = postTest + '%';
       
@@ -544,7 +530,6 @@
         document.getElementById('labProgressBar').style.width = lab + '%';
       
         // ===== STATUS =====
-        setStatus('ebookStatus', ebook);
         setStatus('postTestStatus', postTest);
         setStatus('srqStatus', srq);
         setStatus('hasilStatus', hasil);

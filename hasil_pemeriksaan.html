@@ -381,6 +381,171 @@
         margin: 2rem 0;
       }
 
+      /* CARD IMT */
+.card-custom {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.card-header-custom {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card-header-custom.blue {
+  background: #d6e6f2;
+}
+
+.card-header-custom.beige {
+  background: #fdf6ec;
+}
+
+.card-header-custom h5 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-body-custom {
+  padding: 1.5rem;
+}
+
+
+/* RESULT BOX */
+.result-item {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1.25rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.result-item label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #718096;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.result-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+
+/* BADGE STATUS */
+.badge-status {
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+.badge-underweight {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.badge-normal {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge-overweight {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.badge-obese1 {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.badge-obese2 {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+
+/* IMT SCALE */
+.imt-scale {
+  display: flex;
+  height: 8px;
+  border-radius: 50px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.imt-scale-segment {
+  flex: 1;
+}
+
+.imt-scale-underweight {
+  background: #90caf9;
+}
+
+.imt-scale-normal {
+  background: #a5d6a7;
+}
+
+.imt-scale-overweight {
+  background: #ffcc80;
+}
+
+.imt-scale-obese1 {
+  background: #ef9a9a;
+}
+
+.imt-scale-obese2 {
+  background: #ce93d8;
+}
+
+
+/* PROGRESS BAR */
+.progress-imt {
+  height: 12px;
+  border-radius: 50px;
+  background: #e2e8f0;
+  overflow: visible;
+  position: relative;
+}
+
+.progress-bar-imt {
+  border-radius: 50px;
+  transition: width 0.5s ease;
+}
+
+.progress-markers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: #718096;
+}
+
+
+/* POINTER */
+.imt-pointer {
+  width: 4px;
+  height: 20px;
+  background: #2d3748;
+  border-radius: 2px;
+  position: absolute;
+  top: -6px;
+  transform: translateX(-50%);
+  transition: left 0.5s ease;
+}
+
       /* Action Buttons */
       .action-section {
         display: flex;
@@ -627,6 +792,47 @@
             </div>
             <ul class="exam-list" id="examList"></ul>
           </div>
+          <!-- IMT RESULT CARD -->
+<div class="card-custom result-card mb-4">
+  <div class="card-header-custom blue">
+    <h5><i class="bi bi-calculator"></i> Hasil Perhitungan</h5>
+  </div>
+
+  <div class="card-body-custom">
+
+    <!-- IMT Value -->
+    <div class="result-item mb-3">
+      <label>Indeks Massa Tubuh (IMT)</label>
+      <div class="result-value" id="imtValue">--</div>
+      <small class="text-secondary">kg/m²</small>
+    </div>
+
+    <!-- IMT Category -->
+    <div class="result-item mb-3">
+      <label>Kategori IMT</label>
+      <div id="imtCategory">
+        <span class="badge-status" style="background:#E2E8F0;color:#718096;">
+          Masukkan data
+        </span>
+      </div>
+    </div>
+
+
+    <!-- Waist -->
+    <div class="result-item">
+      <label>Status Lingkar Perut</label>
+      <div id="waistStatus">
+        <span class="badge-status" style="background:#E2E8F0;color:#718096;">
+          Masukkan data
+        </span>
+      </div>
+      <small class="text-secondary d-block mt-2" id="waistThreshold">
+        Batas: - cm
+      </small>
+    </div>
+
+  </div>
+</div>
           <!-- Doctor Notes -->
           <div class="notes-card">
             <div class="notes-title">
@@ -735,6 +941,41 @@
             // Catatan Bidan
             document.getElementById('doctorNote').textContent =
               data.catatan_bidan;
+
+              // ==========================
+// HASIL PEMERIKSAAN FISIK
+// ==========================
+
+// IMT
+document.getElementById("imtValue").textContent = data.imt || "--";
+
+// kategori IMT
+let badgeClass = "badge-normal";
+
+if (data.kategori_imt) {
+  if (data.kategori_imt.toLowerCase().includes("kurang"))
+    badgeClass = "badge-underweight";
+
+  else if (data.kategori_imt.toLowerCase().includes("lebih"))
+    badgeClass = "badge-overweight";
+
+  else if (data.kategori_imt.toLowerCase().includes("obesitas i"))
+    badgeClass = "badge-obese1";
+
+  else if (data.kategori_imt.toLowerCase().includes("obesitas ii"))
+    badgeClass = "badge-obese2";
+}
+
+document.getElementById("imtCategory").innerHTML =
+  `<span class="badge-status ${badgeClass}">
+      ${data.kategori_imt || "Tidak ada data"}
+   </span>`;
+
+// Status Lingkar Perut
+document.getElementById("waistStatus").innerHTML =
+  `<span class="badge-status badge-normal">
+      ${data.status_lingkar_perut || "Tidak ada data"}
+   </span>`;
 
               const examList = document.getElementById('examList');
 examList.innerHTML = '';
